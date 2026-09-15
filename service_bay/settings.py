@@ -84,30 +84,40 @@ TEMPLATES = [
 WSGI_APPLICATION = 'service_bay.wsgi.application'
 
 # Database Configuration with DATABASE_URL support (Railway / PostgreSQL)
-db_url = os.environ.get('DATABASE_URL')
-if db_url:
+db_url = os.environ.get('DATABASE_URL', '').strip()
+if db_url and '://' in db_url and not db_url.startswith('://'):
     try:
         import dj_database_url
-        DATABASES = {
-            'default': dj_database_url.config(
-                default=db_url,
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        }
-    except ImportError:
+        parsed_db = dj_database_url.parse(
+            db_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+        if parsed_db and 'ENGINE' in parsed_db:
+            DATABASES = {'default': parsed_db}
+        else:
+            raise ValueError("Invalid parsed database URL config")
+    except Exception:
         import urllib.parse
         url = urllib.parse.urlparse(db_url)
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql' if 'postgres' in url.scheme else 'django.db.backends.sqlite3',
-                'NAME': url.path[1:] if url.path else BASE_DIR / 'db.sqlite3',
-                'USER': url.username or '',
-                'PASSWORD': url.password or '',
-                'HOST': url.hostname or '',
-                'PORT': url.port or '',
+        if url.scheme and 'postgres' in url.scheme:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql',
+                    'NAME': url.path[1:] if url.path else 'railway',
+                    'USER': url.username or '',
+                    'PASSWORD': url.password or '',
+                    'HOST': url.hostname or '',
+                    'PORT': url.port or '',
+                }
             }
-        }
+        else:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': BASE_DIR / 'db.sqlite3',
+                }
+            }
 else:
     DATABASES = {
         'default': {
