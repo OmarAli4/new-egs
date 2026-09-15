@@ -1173,10 +1173,10 @@ html.lenis, html.lenis body {
     .job-card { @apply static mt-8; }
   }
   @media (max-width: 768px) {
-    .app-header { @apply py-3 px-4; }
+    .app-header { @apply py-2.5 px-3; }
     .top-marques-bar { margin-top: var(--header-h-mobile); }
     .status-indicator, .brand-sub { @apply hidden; }
-    .hotline-btn span { @apply hidden; }
+    .login-trigger-btn, .hotline-btn { @apply py-2 px-2.5; }
     .top-marques-container { @apply px-4 flex-col items-start gap-2; }
     .top-marques-track { @apply w-full; }
     .trust-strip { @apply grid-cols-1; }

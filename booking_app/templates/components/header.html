@@ -80,16 +80,16 @@
                 
                 <!-- Auth Status Button -->
                 <div class="user-account-menu" id="authBtnGroup">
-                    <button class="login-trigger-btn" id="authBtn" onclick="openLoginModal()">
+                    <button class="login-trigger-btn" id="authBtn" onclick="openLoginModal()" title="تسجيل الدخول / حساب جديد">
                         <i data-feather="user"></i>
-                        <span id="authBtnText">تسجيل الدخول / حساب جديد</span>
+                        <span id="authBtnText" class="hidden md:inline">تسجيل الدخول / حساب جديد</span>
                     </button>
                 </div>
 
 
                 <a href="tel:{{ site_settings.short_hotline|default:'19900' }}" class="hotline-btn" title="الخط الساخن المباشر">
                     <i data-feather="phone-call"></i>
-                    <span>{{ site_settings.short_hotline|default:'19900' }}</span>
+                    <span class="hidden sm:inline">{{ site_settings.short_hotline|default:'19900' }}</span>
                 </a>
             </div>
         </div>
