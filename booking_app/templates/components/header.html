@@ -3,7 +3,7 @@
         <div class="header-container">
             <a href="/" class="brand-logo" onclick="goToHomePage(event)" title="الرئيسية - EGS Elite Garage">
                 <div class="egs-logo-badge">
-                    <svg viewBox="0 0 240 140" style="height: 68px; width: auto; display: block;">
+                    <svg viewBox="0 0 240 140" class="h-11 sm:h-[64px] w-auto block">
                         <defs>
                             <linearGradient id="navGradLeft" x1="0%" y1="100%" x2="100%" y2="0%">
                                 <stop offset="0%" stop-color="#00D2FF"/>
@@ -60,15 +60,15 @@
             </a>
 
             <!-- QUICK SERVICE CHANNELS (الخيارين في الهيدر لسهولة وسرعة الوصول) -->
-            <nav class="header-channels-nav flex items-center gap-2" aria-label="قنوات حجز الصيانة">
+            <nav class="header-channels-nav flex items-center gap-1.5 sm:gap-2" aria-label="قنوات حجز الصيانة">
                 <button type="button" class="header-channel-btn btn-channel-mobile" id="headerBtnMobile" onclick="selectServiceChannel('mobile', event)" title="طلب ورشة الصيانة المتنقلة لتصلك في مكانك">
                     <i data-feather="truck" class="w-3.5 h-3.5 text-blue-400"></i>
-                    <span class="channel-text">ورشة متنقلة (مكانك)</span>
+                    <span class="channel-text">ورشة متنقلة <span class="hidden sm:inline">(مكانك)</span></span>
                     <span class="channel-badge-hot">متاح الآن 🟢</span>
                 </button>
                 <button type="button" class="header-channel-btn btn-channel-branch" id="headerBtnBranch" onclick="selectServiceChannel('branch', event)" title="حجز موعد فحص وزيارة في مركز الصيانة">
                     <i data-feather="home" class="w-3.5 h-3.5 text-neutral-300"></i>
-                    <span class="channel-text">مركز الصيانة (الفرع)</span>
+                    <span class="channel-text">الفرع <span class="hidden sm:inline">(مركز الصيانة)</span></span>
                 </button>
             </nav>
 

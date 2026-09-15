@@ -1104,46 +1104,14 @@ html.lenis, html.lenis body {
   .bosch-pylon-footer i {
     @apply w-4 h-4 text-[#3B82F6];
   }
-}
 
 /* ==========================================
-   RESPONSIVE OVERRIDES
-   ========================================== */
-@layer components {
-  @media (max-width: 768px) {
-    .app-header { @apply py-3 px-4; }
-    .top-marques-bar { margin-top: var(--header-h-mobile); }
-    .status-indicator, .brand-sub { @apply hidden; }
-    .hotline-btn span { @apply hidden; }
-    .top-marques-container { @apply px-4 flex-col items-start gap-2; }
-    .top-marques-track { @apply w-full; }
-    .trust-strip { @apply grid-cols-1; }
-    .trust-divider { @apply hidden; }
-    .luxury-section { @apply py-16 px-4; }
-  }
-  @media (max-width: 640px) {
-    .services-grid { @apply grid-cols-1; }
-    .form-row { @apply grid-cols-1; }
-  }
-  @media (max-width: 600px) {
-    .carousel-card { @apply flex-[0_0_240px]; }
-    .account-notice-banner { @apply flex-col items-start gap-3; }
-    .account-notice-banner .btn { @apply w-full justify-center; }
-    .slider-nav-btn { @apply w-9 h-9; }
-    .slider-nav-btn.prev-btn { @apply right-3; }
-    .slider-nav-btn.next-btn { @apply left-3; }
-  }
-  @media (max-width: 992px) {
-    .job-card { @apply static mt-8; }
-  }
-  @media (max-width: 480px) {
-    
-  /* --- 10.1 BESPOKE APPOINTMENT CALENDAR ARCHITECTURE --- */
+/* --- 10.1 BESPOKE APPOINTMENT CALENDAR ARCHITECTURE --- */
   .booking-calendar-suite {
     @apply transition-all duration-300;
   }
   .cal-day-cell {
-    @apply min-h-[44px] sm:min-h-[48px] p-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 flex flex-col items-center justify-center relative cursor-pointer select-none border border-transparent;
+    @apply min-h-[44px] sm:min-h-[48px] p-1 sm:p-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 flex flex-col items-center justify-center relative cursor-pointer select-none border border-transparent;
   }
   .cal-day-cell.cal-other-month {
     @apply opacity-20 pointer-events-none text-neutral-600;
@@ -1198,9 +1166,52 @@ html.lenis, html.lenis body {
     @apply bg-white/20 text-white border-white/30;
   }
 
-  .step-actions { @apply flex-col-reverse; }
-    .step-actions .btn { @apply w-full justify-center; }
-    .modal-secondary-actions { @apply grid-cols-1; }
+/* ==========================================
+   RESPONSIVE OVERRIDES
+   ========================================== */
+  @media (max-width: 992px) {
+    .job-card { @apply static mt-8; }
+  }
+  @media (max-width: 768px) {
+    .app-header { @apply py-3 px-4; }
+    .top-marques-bar { margin-top: var(--header-h-mobile); }
+    .status-indicator, .brand-sub { @apply hidden; }
+    .hotline-btn span { @apply hidden; }
+    .top-marques-container { @apply px-4 flex-col items-start gap-2; }
+    .top-marques-track { @apply w-full; }
+    .trust-strip { @apply grid-cols-1; }
+    .trust-divider { @apply hidden; }
+    .luxury-section { @apply py-12 px-4; }
+    
+    /* Prevent iOS Safari auto-zoom on input focus */
+    .form-control, textarea, input[type="text"], input[type="tel"], input[type="email"] {
+      font-size: 16px !important;
+    }
+  }
+  @media (max-width: 640px) {
+    .app-header { @apply py-2.5 px-3; }
+    .header-container { @apply gap-1.5; }
+    .header-channel-btn { @apply py-1.5 px-2.5 text-[11px]; }
+    .services-grid { @apply grid-cols-1; }
+    .form-row { @apply grid-cols-1; }
+    .stepper-bar { @apply py-4 px-3; }
+    .step-label { @apply text-[10px]; }
+    .step-pane { @apply p-4 sm:p-6; }
+  }
+  @media (max-width: 600px) {
+    .carousel-card { @apply flex-[0_0_240px]; }
+    .account-notice-banner { @apply flex-col items-start gap-3; }
+    .account-notice-banner .btn { @apply w-full justify-center; }
+    .slider-nav-btn { @apply w-9 h-9; }
+    .slider-nav-btn.prev-btn { @apply right-3; }
+    .slider-nav-btn.next-btn { @apply left-3; }
+  }
+  @media (max-width: 480px) {
+    .step-actions { @apply flex-col-reverse gap-3; }
+    .step-actions .btn { @apply w-full justify-center min-h-[48px]; }
+    .modal-secondary-actions { @apply grid-cols-1 gap-2; }
+    .modal-card { @apply max-h-[88vh] overflow-y-auto p-4; }
+    .login-modal-card { @apply p-5; }
   }
 }
 
