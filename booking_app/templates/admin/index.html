@@ -1,363 +1,303 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block extrastyle %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-{% endblock %}
-
 {% block content_title %}{% endblock %}
 
 {% block content %}
-<div class="dashboard-main" style="padding: 0; margin-top: 10px;">
+<div class="dashboard-main-container" style="direction: rtl; font-family: 'Cairo', 'Tajawal', sans-serif;">
     
-    <!-- TOP BAR -->
-    <header class="dashboard-topbar">
-        <div class="topbar-title-block">
-            <h1 class="page-main-title">Dealer Dashboard</h1>
+    <!-- TOP BAR / HEADER -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; background: #FFFFFF; padding: 20px 24px; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div>
+            <h1 style="margin: 0; font-size: 22px; font-weight: 900; color: #0F172A; display: flex; align-items: center; gap: 10px;">
+                <span>غرفة العمليات المركزية وإدارة الحجوزات 🚚</span>
+                <span style="background: #EFF6FF; color: #1E60FF; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 800;">EGS Live Center</span>
+            </h1>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #64748B; font-weight: 600;">متابعة الحجوزات الميدانية، الفنيين في الطريق، والإيرادات لحظة بلحظة</p>
         </div>
 
-        <div class="topbar-actions-block">
-            <!-- Search Input with Keyboard Shortcut -->
-            <div class="search-input-pill">
-                <i data-feather="search"></i>
-                <input type="text" id="globalSearchInput" placeholder="Search" oninput="filterDashboardTable()">
-                <span class="kbd-shortcut">⌘K</span>
-            </div>
-
-            <!-- Time Range Dropdown -->
-            <div class="dropdown-select-pill">
-                <select id="timeframeSelect" onchange="updateDashboardPeriod(this.value)">
-                    <option value="last_month" selected>Last Month</option>
-                    <option value="this_week">This Week</option>
-                    <option value="today">Today</option>
-                    <option value="all_time">All Time</option>
-                </select>
-                <i data-feather="chevron-down"></i>
-            </div>
-
-            <!-- Add New Booking CTA -->
-            <a href="{% url 'admin:booking_app_booking_add' %}" class="btn-cta-green">
-                <i data-feather="plus"></i>
-                <span>+ Add New Vehicles</span>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <a href="{% url 'admin:booking_app_booking_add' %}" style="background: #10B981; color: white; padding: 10px 18px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(16,185,129,0.25); transition: background 0.2s;">
+                <i data-feather="plus-circle" style="width: 17px; height: 17px;"></i>
+                <span>+ إضافة حجز صيانة جديد</span>
+            </a>
+            <a href="/" target="_blank" style="background: #0F172A; color: white; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                <i data-feather="external-link" style="width: 16px; height: 16px;"></i>
+                <span>معاينة المنصة 🌐</span>
             </a>
         </div>
-    </header>
+    </div>
 
     <!-- TOP 4 METRICS KPI CARDS -->
-    <section class="kpi-cards-grid">
-        <!-- Card 1: Blue -->
-        <div class="kpi-card">
-            <div class="kpi-icon-box icon-blue">
-                <i data-feather="truck"></i>
-            </div>
-            <div class="kpi-content">
-                <span class="kpi-label">Vehicles in Stock</span>
-                <div class="kpi-value-row">
-                    <span class="kpi-number tabular">{{ total_count|default:"150" }}</span>
-                    <span class="kpi-unit">units</span>
-                    <span class="kpi-badge badge-up">↑ 8%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 2: Green -->
-        <div class="kpi-card">
-            <div class="kpi-icon-box icon-green">
-                <i data-feather="check-square"></i>
-            </div>
-            <div class="kpi-content">
-                <span class="kpi-label">Vehicles Sold</span>
-                <div class="kpi-value-row">
-                    <span class="kpi-number tabular">{{ completed_count|default:"20" }}</span>
-                    <span class="kpi-unit">units</span>
-                    <span class="kpi-badge badge-down">↓ 8%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 3: Cyan -->
-        <div class="kpi-card">
-            <div class="kpi-icon-box icon-cyan">
-                <i data-feather="tag"></i>
-            </div>
-            <div class="kpi-content">
-                <span class="kpi-label">Active Offers</span>
-                <div class="kpi-value-row">
-                    <span class="kpi-number tabular">{{ active_count|default:"3" }}</span>
-                    <span class="kpi-unit">offers</span>
-                    <span class="kpi-badge badge-up">↑ 8%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 4: Amber -->
-        <div class="kpi-card">
-            <div class="kpi-icon-box icon-amber">
-                <i data-feather="clock"></i>
-            </div>
-            <div class="kpi-content">
-                <span class="kpi-label">Pending Inquiries</span>
-                <div class="kpi-value-row">
-                    <span class="kpi-number tabular">{{ pending_count|default:"5" }}</span>
-                    <span class="kpi-unit">inquiries</span>
-                    <span class="kpi-badge badge-down">↓ 8%</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MIDDLE SECTION (CHART & SALES OFFER) -->
-    <section class="middle-grid">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
         
-        <!-- Left: Sales Performance Line Chart (65%) -->
-        <div class="content-card sales-performance-card">
-            <div class="card-header-row">
-                <h2 class="card-title">Sales Performance</h2>
-                <div class="chart-legend-row">
-                    <span class="legend-item"><span class="legend-dot dot-actual"></span> Actual Sales</span>
-                    <span class="legend-item"><span class="legend-dot dot-target"></span> Sales Target</span>
+        <!-- Card 1: Total Bookings -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #EFF6FF; color: #1E60FF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i data-feather="calendar" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div style="overflow: hidden;">
+                <span style="font-size: 12px; font-weight: 700; color: #64748B; display: block; white-space: nowrap;">إجمالي الحجوزات</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; white-space: nowrap;">
+                    <span style="font-size: 24px; font-weight: 900; color: #0F172A; line-height: 1;">{{ total_count|default:"0" }}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #94A3B8;">حجز معتمد</span>
+                    <span style="background: #DCFCE7; color: #15803D; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;">نشط 🟢</span>
                 </div>
             </div>
-            <div class="chart-container">
-                <canvas id="salesPerformanceChart"></canvas>
+        </div>
+
+        <!-- Card 2: Active Mobile Vans -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #ECFEFF; color: #06B6D4; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i data-feather="truck" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div style="overflow: hidden;">
+                <span style="font-size: 12px; font-weight: 700; color: #64748B; display: block; white-space: nowrap;">ورش الصيانة في الطريق</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; white-space: nowrap;">
+                    <span style="font-size: 24px; font-weight: 900; color: #0F172A; line-height: 1;">{{ active_count|default:"0" }}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #94A3B8;">سيارة صيانة</span>
+                    <span style="background: #FEF3C7; color: #B45309; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;">موقع العمل ⚙️</span>
+                </div>
             </div>
         </div>
 
-        <!-- Right: Sales Offer List (35%) -->
-        <div class="content-card sales-offer-card">
-            <div class="card-header-row">
-                <h2 class="card-title">Sales Offer</h2>
-                <a href="{% url 'admin:booking_app_booking_changelist' %}" class="card-link-see-all">See all</a>
+        <!-- Card 3: Completed Bookings -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #ECFDF5; color: #10B981; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i data-feather="check-circle" style="width: 24px; height: 24px;"></i>
             </div>
-            <div class="sales-offer-list">
-                
-                {% for b in recent_bookings|slice:":4" %}
-                <div class="offer-list-item">
-                    <div class="offer-avatar">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar">
-                    </div>
-                    <div class="offer-meta">
-                        <a href="{% url 'admin:booking_app_booking_change' b.id %}" style="text-decoration:none;">
-                            <div class="offer-code-tag tabular">{{ b.ticket_code }}</div>
-                        </a>
-                        <div class="offer-sub">{{ b.customer_name }} → 5% off</div>
-                        <div class="offer-date tabular">{{ b.booking_date|date:"jS M" }} - {{ b.booking_time }}</div>
-                    </div>
-                    <div class="offer-badge-col">
-                        {% if b.status == 'completed' %}
-                            <span class="status-pill-subtle status-check">Check</span>
-                        {% elif b.status == 'cancelled' %}
-                            <span class="status-pill-subtle status-cancelled">Cancelled</span>
-                        {% elif b.status == 'in_progress' or b.status == 'on_the_way' %}
-                            <span class="status-pill-subtle status-signed">Signed</span>
-                        {% else %}
-                            <span class="status-pill-subtle status-offer-sent">Offer sent</span>
-                        {% endif %}
-                    </div>
+            <div style="overflow: hidden;">
+                <span style="font-size: 12px; font-weight: 700; color: #64748B; display: block; white-space: nowrap;">صيانة مكتملة بنجاح</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; white-space: nowrap;">
+                    <span style="font-size: 24px; font-weight: 900; color: #0F172A; line-height: 1;">{{ completed_count|default:"0" }}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #94A3B8;">عملية</span>
+                    <span style="background: #DCFCE7; color: #15803D; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;">مكتمل ✅</span>
                 </div>
-                {% empty %}
-                <div class="offer-list-item">
-                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
-                    <div class="offer-meta">
-                        <div class="offer-code-tag tabular">KA00001-001</div>
-                        <div class="offer-sub">John Doe → 5% off</div>
-                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
-                    </div>
-                    <div class="offer-badge-col"><span class="status-pill-subtle status-check">Check</span></div>
-                </div>
-                <div class="offer-list-item">
-                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
-                    <div class="offer-meta">
-                        <div class="offer-code-tag tabular">KA00001-001</div>
-                        <div class="offer-sub">John Doe → 5% off</div>
-                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
-                    </div>
-                    <div class="offer-badge-col"><span class="status-pill-subtle status-cancelled">Cancelled</span></div>
-                </div>
-                <div class="offer-list-item">
-                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
-                    <div class="offer-meta">
-                        <div class="offer-code-tag tabular">KA00001-001</div>
-                        <div class="offer-sub">John Doe → 5% off</div>
-                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
-                    </div>
-                    <div class="offer-badge-col"><span class="status-pill-subtle status-signed">Signed</span></div>
-                </div>
-                <div class="offer-list-item">
-                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
-                    <div class="offer-meta">
-                        <div class="offer-code-tag tabular">KA00001-001</div>
-                        <div class="offer-sub">John Doe → 5% off</div>
-                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
-                    </div>
-                    <div class="offer-badge-col"><span class="status-pill-subtle status-offer-sent">Offer sent</span></div>
-                </div>
-                {% endfor %}
-
             </div>
         </div>
-    </section>
 
-    <!-- BOTTOM SECTION (BRAND & VEHICLE STOCK) -->
-    <section class="bottom-grid" id="vehiclesTableSection">
+        <!-- Card 4: Total Revenue -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i data-feather="dollar-sign" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div style="overflow: hidden;">
+                <span style="font-size: 12px; font-weight: 700; color: #64748B; display: block; white-space: nowrap;">الإيرادات الإجمالية المقدرة</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; white-space: nowrap;">
+                    <span style="font-size: 22px; font-weight: 900; color: #0F172A; line-height: 1;">{{ total_revenue|default:"0" }}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #94A3B8;">ج.م</span>
+                    <span style="background: #EFF6FF; color: #1D4ED8; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;">مؤكد 💰</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ANALYTICS & REVENUE CHARTS SECTION -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px;">
         
-        <!-- Left: Brand / Marques Grid (40%) -->
-        <div class="content-card brand-fleet-card">
-            <div class="card-header-row">
-                <h2 class="card-title">Brand</h2>
-                <a href="{% url 'admin:booking_app_carmake_changelist' %}" class="card-link-see-all">See all</a>
+        <!-- Revenue Trend Line Chart -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 8px;">
+                    <i data-feather="trending-up" style="color: #1E60FF; width: 18px; height: 18px;"></i>
+                    <span>مؤشر الإيرادات اليومي (آخر 14 يوم) 📈</span>
+                </h3>
+                <span style="font-size: 11px; background: #EFF6FF; color: #1E60FF; font-weight: 800; padding: 2px 8px; border-radius: 6px;">تحديث مباشر</span>
             </div>
-            
-            <!-- Filter Pill Segment -->
-            <div class="brand-filter-segment">
-                <button class="segment-tab active" onclick="setBrandFilter('active', this)">Active (4)</button>
-                <button class="segment-tab" onclick="setBrandFilter('inactive', this)">Inactive (2)</button>
-            </div>
-
-            <!-- Brand Cards 2-Col Grid -->
-            <div class="brand-cards-grid">
-                <div class="brand-tile">
-                    <div class="brand-logo-round brand-fiat">FIAT</div>
-                    <div class="brand-title-name">Fiat Professional</div>
-                    <div class="brand-units-count tabular">24 units</div>
-                </div>
-                <div class="brand-tile">
-                    <div class="brand-logo-round brand-honda">H</div>
-                    <div class="brand-title-name">Honda</div>
-                    <div class="brand-units-count tabular">12 units</div>
-                </div>
-                <div class="brand-tile">
-                    <div class="brand-logo-round brand-mercedes">MB</div>
-                    <div class="brand-title-name">Mercedes-Benz</div>
-                    <div class="brand-units-count tabular">38 units</div>
-                </div>
-                <div class="brand-tile">
-                    <div class="brand-logo-round brand-porsche">P</div>
-                    <div class="brand-title-name">Porsche</div>
-                    <div class="brand-units-count tabular">16 units</div>
-                </div>
+            <div style="position: relative; height: 220px; width: 100%;">
+                <canvas id="revenueTrendChart"></canvas>
             </div>
         </div>
 
-        <!-- Right: Vehicle Stock Table (60%) -->
-        <div class="content-card vehicle-stock-card">
-            <div class="card-header-row">
-                <h2 class="card-title">Vehicle Stock</h2>
-                <div class="card-actions-group">
-                    <a href="{% url 'admin:booking_app_booking_changelist' %}" class="btn-outline-pill"><i data-feather="filter"></i> Filter</a>
-                    <a href="{% url 'admin:booking_app_booking_changelist' %}" class="btn-outline-pill">See all</a>
-                </div>
+        <!-- Top Services Doughnut Chart -->
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 8px;">
+                    <i data-feather="pie-chart" style="color: #10B981; width: 18px; height: 18px;"></i>
+                    <span>أكثر الخدمات طلباً في الورشة 🔧</span>
+                </h3>
+                <span style="font-size: 11px; background: #ECFDF5; color: #059669; font-weight: 800; padding: 2px 8px; border-radius: 6px;">الأعلى مبيعاً</span>
             </div>
-
-            <div class="table-responsive">
-                <table class="stock-table" id="dashboardStockTable">
-                    <thead>
-                        <tr>
-                            <th>BRAND</th>
-                            <th>VIN / TICKET</th>
-                            <th>STATUS</th>
-                            <th>LOCATION</th>
-                            <th>PRICE</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for b in recent_bookings %}
-                        <tr>
-                            <td>
-                                <div class="table-brand-cell">
-                                    <div class="table-brand-icon">{{ b.car_make|slice:":2"|upper }}</div>
-                                    <span class="table-model-name">{{ b.car_make }} {{ b.car_model }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="vin-tag tabular">{{ b.ticket_code }}</span>
-                            </td>
-                            <td>
-                                {% if b.status == 'completed' %}
-                                    <span class="stock-status-pill status-sold"><span class="dot-sold"></span> Sold</span>
-                                {% elif b.status == 'on_the_way' or b.status == 'in_progress' %}
-                                    <span class="stock-status-pill status-instock"><span class="dot-instock"></span> In Stock</span>
-                                {% else %}
-                                    <span class="stock-status-pill status-pending"><span class="dot-pending"></span> Pending</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <span class="location-name">{{ b.get_district_display|default:"Showroom A" }}</span>
-                            </td>
-                            <td>
-                                <strong class="price-val tabular">€ {{ b.total_price }}</strong>
-                            </td>
-                            <td>
-                                <a href="{% url 'admin:booking_app_booking_change' b.id %}" class="btn-action-dots" title="Edit in Admin">•••</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td><div class="table-brand-cell"><div class="table-brand-icon">FIAT</div><span class="table-model-name">Model X</span></div></td>
-                            <td><span class="vin-tag tabular">123456</span></td>
-                            <td><span class="stock-status-pill status-instock"><span class="dot-instock"></span> In Stock</span></td>
-                            <td><span class="location-name">Showroom A</span></td>
-                            <td><strong class="price-val tabular">€ 45,000</strong></td>
-                            <td><button class="btn-action-dots">•••</button></td>
-                        </tr>
-                        <tr>
-                            <td><div class="table-brand-cell"><div class="table-brand-icon">H</div><span class="table-model-name">Model X</span></div></td>
-                            <td><span class="vin-tag tabular">123456</span></td>
-                            <td><span class="stock-status-pill status-sold"><span class="dot-sold"></span> Sold</span></td>
-                            <td><span class="location-name">Showroom A</span></td>
-                            <td><strong class="price-val tabular">€ 45,000</strong></td>
-                            <td><button class="btn-action-dots">•••</button></td>
-                        </tr>
-                        <tr>
-                            <td><div class="table-brand-cell"><div class="table-brand-icon">MB</div><span class="table-model-name">Model X</span></div></td>
-                            <td><span class="vin-tag tabular">123456</span></td>
-                            <td><span class="stock-status-pill status-pending"><span class="dot-pending"></span> Pending</span></td>
-                            <td><span class="location-name">Showroom A</span></td>
-                            <td><strong class="price-val tabular">€ 45,000</strong></td>
-                            <td><button class="btn-action-dots">•••</button></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div style="position: relative; height: 220px; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <canvas id="topServicesChart"></canvas>
             </div>
         </div>
-    </section>
 
-    <!-- NATIVE DJANGO ADMIN MODEL SHORTCUTS -->
-    <div style="margin-top: 32px; background:#FFFFFF; border:1px solid #EEF2F6; border-radius:16px; padding:20px 24px;">
-        <h3 style="font-size:14px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
-            <i data-feather="database" style="width:16px; height:16px; color:#10B981;"></i>
-            <span>إدارة الجداول والنماذج المركزية (Django Database Models)</span>
-        </h3>
-        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px;">
-            <a href="{% url 'admin:booking_app_booking_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
-                <span>📋 أوامر العمل والحجوزات</span>
-                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
+    </div>
+
+    <!-- RECENT BOOKINGS TABLE PANEL -->
+    <div style="background: #FFFFFF; border-radius: 16px; padding: 20px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #F1F5F9; flex-wrap: wrap; gap: 12px;">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 10px;">
+                <i data-feather="list" style="color: #1E60FF; width: 20px; height: 20px;"></i>
+                <span>أحدث أشرطة وكروت العمل المسجلة بالمنصة</span>
+            </h3>
+            <a href="{% url 'admin:booking_app_booking_changelist' %}" style="color: #1E60FF; font-size: 13px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <span>عرض جميع الحجوزات ({{ total_count }})</span>
+                <span>←</span>
             </a>
-            <a href="{% url 'admin:booking_app_service_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
-                <span>💰 باقات وأسعار الصيانة</span>
-                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
-            </a>
-            <a href="{% url 'admin:booking_app_carmake_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
-                <span>🚘 ماركات وموديلات السيارات</span>
-                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
-            </a>
-            <a href="{% url 'admin:booking_app_timeslot_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
-                <span>⏰ المواعيد والفترات المتاحة</span>
-                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
-            </a>
+        </div>
+
+        <div style="overflow-x: auto; width: 100%;">
+            <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; min-width: 980px;">
+                <thead>
+                    <tr style="background: #F8FAFC; border-bottom: 2px solid #E2E8F0; color: #475569;">
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 110px;">أمر العمل</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 170px;">العميل والهاتف</th>
+                        <th style="padding: 12px 14px; font-weight: 800; min-width: 220px;">طلب العميل / العطل ✍️</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 140px;">السيارة</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 170px;">المنطقة والموعد</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 110px;">الإجمالي</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 130px;">حالة الحجز</th>
+                        <th style="padding: 12px 14px; font-weight: 800; white-space: nowrap; width: 90px;">إجراء سريع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in recent_bookings %}
+                    <tr style="border-bottom: 1px solid #F1F5F9; transition: background 0.15s;" onmouseover="this.style.background='#FAFCFF'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <strong style="color: #1E60FF; font-family: monospace; font-size: 13px; background: #EFF6FF; border: 1px solid #DBEAFE; padding: 4px 10px; border-radius: 8px; display: inline-block;">{{ b.ticket_code }}</strong>
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <strong style="color: #0F172A; display: block;">{{ b.customer_name }}</strong>
+                            <small style="color: #64748B; font-size: 12px; font-weight: 600;">📞 {{ b.customer_phone }}</small>
+                        </td>
+                        <td style="padding: 12px 14px;">
+                            <div style="background: #F1F5F9; border-right: 3px solid #1E60FF; padding: 6px 10px; border-radius: 6px; font-size: 12px; color: #1E293B; line-height: 1.4; max-width: 260px;" title="{{ b.customer_notes }}">
+                                ✍️ {{ b.customer_notes|default:"صيانة دورية وحماية شاملة"|truncatechars:45 }}
+                            </div>
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <strong style="color: #0F172A; display: block;">{{ b.car_make }} {{ b.car_model }}</strong>
+                            <small style="color: #64748B; font-size: 11px;">موديل ({{ b.car_year }})</small>
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <span style="color: #0F172A; font-weight: 700; display: block;">📅 {{ b.booking_date|date:"Y-m-d" }} - {{ b.booking_time }}</span>
+                            <small style="color: #0284C7; font-weight: 700; font-size: 11px;">📍 {{ b.get_district_display }}</small>
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <strong style="color: #059669; font-size: 14px; font-weight: 800;">{{ b.total_price }} ج.م</strong>
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            {% if b.status == 'completed' %}
+                                <span style="background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block;">اكتملت ✅</span>
+                            {% elif b.status == 'in_progress' %}
+                                <span style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block;">جاري الصيانة ⚙️</span>
+                            {% elif b.status == 'on_the_way' %}
+                                <span style="background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block;">في الطريق 🚚</span>
+                            {% else %}
+                                <span style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block;">مؤكد 🟢</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 14px; white-space: nowrap;">
+                            <a href="{% url 'admin:booking_app_booking_change' b.id %}" style="background: #F8FAFC; color: #0F172A; border: 1px solid #CBD5E1; padding: 5px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>تعديل</span>
+                                <span>✏️</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" style="padding: 32px; text-align: center; color: #94A3B8; font-weight: 600;">لا توجد حجوزات مسجلة بعد.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
 </div>
 
-<!-- Dashboard Scripts -->
-<script src="{% static 'js/dashboard.js' %}"></script>
+<!-- Chart.js Library & Initialization Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
-    if (typeof feather !== 'undefined') {
-        feather.replace();
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Revenue Line Chart
+    const revCtx = document.getElementById('revenueTrendChart');
+    if (revCtx) {
+        new Chart(revCtx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_labels_json|safe }},
+                datasets: [{
+                    label: 'الإيرادات اليومية (ج.م)',
+                    data: {{ chart_data_json|safe }},
+                    borderColor: '#1E60FF',
+                    backgroundColor: 'rgba(30, 96, 255, 0.08)',
+                    fill: true,
+                    tension: 0.35,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#1E60FF',
+                    pointBorderColor: '#FFFFFF',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        rtl: true,
+                        callbacks: {
+                            label: function(context) {
+                                return ' الإيراد: ' + context.parsed.y.toLocaleString() + ' ج.م';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: 'Cairo', size: 11 } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#F1F5F9' },
+                        ticks: {
+                            font: { family: 'Cairo', size: 11 },
+                            callback: function(value) { return value.toLocaleString() + ' ج.م'; }
+                        }
+                    }
+                }
+            }
+        });
     }
+
+    // 2. Top Services Doughnut Chart
+    const servCtx = document.getElementById('topServicesChart');
+    if (servCtx) {
+        new Chart(servCtx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ service_labels_json|safe }},
+                datasets: [{
+                    data: {{ service_counts_json|safe }},
+                    backgroundColor: ['#1E60FF', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true,
+                        labels: {
+                            font: { family: 'Cairo', size: 11 },
+                            usePointStyle: true,
+                            padding: 12
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+});
 </script>
 {% endblock %}

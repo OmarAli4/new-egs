@@ -1,0 +1,157 @@
+<!-- 3. AUTHENTICATION & ACCOUNT REGISTRATION MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card login-modal-card">
+            <button class="modal-close-btn" onclick="closeLoginModal()"><i data-feather="x"></i></button>
+
+            <div class="login-toggle-tabs">
+                <button class="toggle-tab active" id="tabUserLogin" onclick="switchLoginTab('user')">
+                    <i data-feather="log-in"></i>
+                    <span>تسجيل الدخول</span>
+                </button>
+                <button class="toggle-tab" id="tabUserRegister" onclick="switchLoginTab('register')">
+                    <i data-feather="user-plus"></i>
+                    <span>إنشاء حساب جديد</span>
+                </button>
+            </div>
+
+            <!-- Unified Smart Sign In Form (Supports Customers & Admin) -->
+            <form class="login-form active" id="formUserLogin" onsubmit="handleAuthSubmit(event, 'user')">
+                <h3 class="login-heading">تسجيل الدخول للحساب</h3>
+                <p class="login-subtext">أدخل بريدك الإلكتروني، اسم المستخدم، أو رقم الهاتف للمتابعة</p>
+                <div class="form-group">
+                    <label for="loginUserInput"><i data-feather="user"></i> البريد الإلكتروني أو الهاتف</label>
+                    <input type="text" id="loginUserInput" class="form-control" placeholder="admin@egs.com أو 010XXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginUserPasswordInput"><i data-feather="key"></i> كلمة السر</label>
+                    <input type="password" id="loginUserPasswordInput" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                        <i data-feather="log-in"></i>
+                        <span>تسجيل الدخول ومتابعة الحجز</span>
+                    </button>
+            </form>
+
+            <!-- User Account Registration Form -->
+            <form class="login-form" id="formUserRegister" onsubmit="handleAuthSubmit(event, 'register')">
+                <h3 class="login-heading">إنشاء حساب عميل جديد</h3>
+                <p class="login-subtext">أنشئ حسابك خلال لحظات لتتمكن من حجز الصيانة ومتابعة أمر العمل</p>
+                <div class="form-group">
+                    <label for="regNameInput"><i data-feather="user"></i> الاسم بالكامل</label>
+                    <input type="text" id="regNameInput" class="form-control" placeholder="مثال: محمد السيد" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPhoneInput"><i data-feather="phone"></i> رقم المحمول</label>
+                    <input type="tel" id="regPhoneInput" class="form-control" placeholder="010XXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPasswordInput"><i data-feather="lock"></i> كلمة السر للحساب</label>
+                    <input type="password" id="regPasswordInput" class="form-control" placeholder="اختر كلمة سر قوية" required>
+                </div>
+                <button type="submit" class="btn btn-go btn-block">
+                        <i data-feather="check-circle"></i>
+                        <span>إنشاء الحساب ومتابعة الحجز</span>
+                    </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal Overlay -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-card">
+            <div class="modal-icon-success">
+                <i data-feather="check-circle"></i>
+            </div>
+            <h2 class="modal-title">تم تأكيد حجز الصيانة المتنقلة بنجاح! 🚚</h2>
+            <p class="modal-desc">تم حفظ طلبك وإصدار أمر العمل بـ نظام EGS. رقم كارت العمل الخاص بك هو:</p>
+            <div class="ticket-display-box tabular" id="modalTicketCode">SB-2026-8942</div>
+            
+            <div class="receipt-summary" id="modalReceiptDetails"></div>
+
+            <div class="modal-actions">
+                <a id="modalWhatsappBtn" href="#" target="_blank" class="btn btn-whatsapp btn-large btn-block">
+                    <i data-feather="message-circle"></i>
+                    <span>إرسال تفاصيل الحجز وتأكيد الموعد عبر واتساب 💬</span>
+                </a>
+                <div class="modal-secondary-actions">
+                    <button class="btn btn-primary" onclick="window.print()">
+                        <i data-feather="printer"></i>
+                            <span>طباعة كارت العمل</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">
+                        <span>إغلاق وتقديم حجز جديد</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. IN-CENTER BRANCH APPOINTMENT MODAL -->
+    <div class="modal-overlay" id="branchBookingModal">
+        <div class="modal-card login-modal-card">
+            <button class="modal-close-btn" onclick="closeBranchBookingModal()"><i data-feather="x"></i></button>
+
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-11 h-11 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                    <i data-feather="home" class="w-5 h-5 text-[#3B82F6]"></i>
+                </div>
+                <div>
+                    <h3 class="login-heading mb-0 text-lg">حجز موعد في مركز الصيانة</h3>
+                    <p class="text-xs text-neutral-400 font-light">اختر الفرع والموعد الأنسب لزيارتك</p>
+                </div>
+            </div>
+
+            <form id="formBranchBooking" onsubmit="handleBranchBookingSubmit(event)">
+                <div class="form-group mb-3">
+                    <label for="branchSelect"><i data-feather="map-pin"></i> اختر فرع مركز الصيانة</label>
+                    <select id="branchSelect" class="form-control" required>
+                        <option value="october">فرع 6 أكتوبر الرئيسي (المنطقة الصناعية الثالثة - مركز Bosch)</option>
+                        <option value="zayed">فرع الشيخ زايد (المحور المركزي - بجوار هايبر وان)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="form-group">
+                        <label for="branchDateInput"><i data-feather="calendar"></i> تاريخ الزيارة</label>
+                        <input type="date" id="branchDateInput" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="branchTimeSelect"><i data-feather="clock"></i> وقت الحضور</label>
+                        <select id="branchTimeSelect" class="form-control" required>
+                            <option value="10:00 AM">10:00 صباحاً</option>
+                            <option value="12:00 PM">12:00 ظهراً</option>
+                            <option value="02:30 PM">02:30 عصراً</option>
+                            <option value="05:00 PM">05:00 مساءً</option>
+                            <option value="07:00 PM">07:00 مساءً</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="branchCarInput"><i data-feather="compass"></i> نوع وموديل السيارة</label>
+                    <input type="text" id="branchCarInput" class="form-control" placeholder="مثال: مرسيدس C180 موديل 2022" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="form-group">
+                        <label for="branchCustName"><i data-feather="user"></i> اسم العميل</label>
+                        <input type="text" id="branchCustName" class="form-control" placeholder="الاسم ثلاثي" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="branchCustPhone"><i data-feather="phone"></i> رقم الهاتف</label>
+                        <input type="tel" id="branchCustPhone" class="form-control" placeholder="010XXXXXXXX" required>
+                    </div>
+                </div>
+
+                <div class="terms-box mb-4 text-xs">
+                    <i data-feather="shield-check" class="w-4 h-4 text-blue-400 shrink-0"></i>
+                    <span>سيتم تجهيز حارة الفحص واستقبال سيارتك فور وصولك في الموعد المحدد مع فتح كارت صيانة Bosch EGS.</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-large">
+                    <i data-feather="check-circle"></i>
+                    <span>تأكيد حجز موعد الفرع 🏢</span>
+                </button>
+            </form>
+        </div>
+    </div>

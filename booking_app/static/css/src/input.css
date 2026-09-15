@@ -31,11 +31,21 @@ html.lenis, html.lenis body {
 }
 
 /* ==========================================
+   LAYOUT DESIGN TOKENS & SPATIAL MATH
+   ========================================== */
+:root {
+  --header-h: 96px;
+  --header-h-mobile: 92px;
+  --marques-h: 46px;
+  --pylon-top: 180px;
+}
+
+/* ==========================================
    BASE LAYER — Void Black & Rolls-Royce Typography
    ========================================== */
 @layer base {
   html, body {
-    @apply w-full max-w-full overflow-x-hidden antialiased;
+    @apply w-full max-w-full overflow-x-clip antialiased;
     background-color: #000000;
     color: #FFFFFF;
     font-family: 'Cairo', 'Alexandria', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -90,9 +100,9 @@ html.lenis, html.lenis body {
     @apply font-display text-sm font-light tracking-widest text-[#3B82F6] mt-2;
   }
 
-  /* --- 2. HEADER BAR (Sleek Dark Obsidian & Charcoal Wave) --- */
+  /* --- 2. HEADER BAR (Sleek Dark Obsidian & Charcoal Wave - Fixed On Scroll) --- */
   .app-header {
-    @apply sticky top-0 z-[100] w-full py-3.5 px-8 text-white border-b transition-all duration-500;
+    @apply fixed top-0 left-0 right-0 z-[100] w-full py-3.5 px-8 text-white border-b transition-all duration-500;
     background: linear-gradient(135deg, rgba(5, 5, 5, 0.96) 0%, rgba(22, 22, 22, 0.96) 50%, rgba(8, 8, 8, 0.96) 100%);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -116,6 +126,54 @@ html.lenis, html.lenis body {
     transform-origin: 120px 105px;
     @apply animate-rev-needle;
   }
+  
+  /* --- 2.0 HEADER QUICK CHANNELS NAVIGATION (الخيارين في الهيدر) --- */
+  .header-channels-nav {
+    @apply flex items-center gap-2 transition-all duration-300;
+  }
+  .header-channel-btn {
+    @apply relative overflow-hidden flex items-center gap-2 py-2 px-3.5 sm:px-4 rounded-full text-xs font-medium cursor-pointer transition-all duration-300 border select-none whitespace-nowrap;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #E5E7EB;
+  }
+  .header-channel-btn:hover {
+    @apply text-white border-blue-500/50;
+    background-color: rgba(30, 96, 255, 0.15);
+    box-shadow: 0 0 15px rgba(30, 96, 255, 0.25);
+  }
+  .header-channel-btn.btn-channel-mobile {
+    background-color: rgba(30, 96, 255, 0.12);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #FFFFFF;
+  }
+  .header-channel-btn.btn-channel-mobile:hover {
+    background-color: rgba(30, 96, 255, 0.25);
+    border-color: #3B82F6;
+    box-shadow: 0 0 20px rgba(30, 96, 255, 0.4);
+  }
+  .header-channel-btn.btn-channel-mobile.active {
+    background-color: #1E60FF;
+    border-color: #60A5FA;
+    color: #FFFFFF;
+    box-shadow: 0 0 20px rgba(30, 96, 255, 0.6);
+  }
+  .header-channel-btn.btn-channel-branch.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+  .header-channel-btn .channel-badge-hot {
+    @apply text-[10px] font-light py-0.5 px-2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hidden lg:inline-block;
+  }
+  @media (max-width: 640px) {
+    .header-channel-btn {
+      padding: 0.35rem 0.5rem;
+      font-size: 11px;
+    }
+  }
+
   .header-meta {
     @apply flex items-center gap-4;
   }
@@ -158,6 +216,7 @@ html.lenis, html.lenis body {
   /* --- 2.1 TOP MARQUES STRIP --- */
   .top-marques-bar {
     @apply w-full border-b relative z-[90] py-1;
+    margin-top: var(--header-h);
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(15, 15, 15, 0.98) 100%);
     border-color: rgba(255, 255, 255, 0.06);
   }
@@ -472,13 +531,15 @@ html.lenis, html.lenis body {
   .form-group label {
     @apply text-xs font-light tracking-wider uppercase text-neutral-300 flex items-center gap-2;
   }
-  .form-control {
+  .form-control, textarea, input[type="text"], input[type="tel"], input[type="email"] {
     @apply w-full py-3.5 px-4 min-h-[48px] border rounded-sm font-body text-sm text-white outline-none transition-all duration-300;
     background-color: rgba(8, 8, 8, 0.85);
     border-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF !important;
   }
-  .form-control:focus {
+  .form-control:focus, textarea:focus {
     @apply border-white ring-1 ring-white/30;
+    color: #FFFFFF !important;
   }
   .form-control option {
     @apply bg-[#0B1220] text-white;
@@ -567,6 +628,67 @@ html.lenis, html.lenis body {
   }
 
   /* --- 11. EDITORIAL LUXURY BUTTONS --- */
+  
+  /* --- 10.1 BESPOKE APPOINTMENT CALENDAR ARCHITECTURE --- */
+  .booking-calendar-suite {
+    @apply transition-all duration-300;
+  }
+  .cal-day-cell {
+    @apply min-h-[44px] sm:min-h-[48px] p-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 flex flex-col items-center justify-center relative cursor-pointer select-none border border-transparent;
+  }
+  .cal-day-cell.cal-other-month {
+    @apply opacity-20 pointer-events-none text-neutral-600;
+  }
+  .cal-day-cell.cal-past {
+    @apply opacity-25 cursor-not-allowed pointer-events-none text-neutral-600;
+  }
+  .cal-day-cell.cal-available {
+    @apply text-neutral-200 bg-white/[0.02] hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/40;
+  }
+  .cal-day-cell.cal-today {
+    @apply border-blue-500/50 bg-blue-500/10 text-blue-300 font-semibold;
+  }
+  .cal-day-cell.cal-selected {
+    @apply bg-blue-600 text-white font-bold border-blue-400 scale-[1.03] z-10;
+    box-shadow: 0 4px 20px rgba(30, 96, 255, 0.45);
+  }
+  .cal-day-cell .cal-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5 transition-colors;
+  }
+  .cal-day-cell.cal-selected .cal-dot {
+    @apply bg-white;
+  }
+  .cal-nav-btn:disabled {
+    @apply opacity-30 cursor-not-allowed pointer-events-none;
+  }
+
+  /* Enhanced Luxury Slot Pills */
+  .slot-pill {
+    @apply py-2 px-2.5 min-h-[44px] rounded-xl text-center font-body text-xs cursor-pointer flex items-center justify-between transition-all duration-200 text-neutral-200 border border-neutral-800 bg-[#0E131F];
+  }
+  .slot-pill:hover {
+    @apply border-blue-500/40 text-blue-300 bg-blue-600/15;
+  }
+  .slot-pill.selected {
+    @apply bg-blue-600 border-blue-400 text-white font-medium;
+    box-shadow: 0 4px 16px rgba(30, 96, 255, 0.45);
+  }
+  .slot-pill.disabled {
+    @apply opacity-25 cursor-not-allowed pointer-events-none border-transparent bg-neutral-900/50 text-neutral-600;
+  }
+  .slot-pill .slot-avail {
+    @apply text-[10px] py-0.5 px-1.5 rounded-md font-light;
+  }
+  .slot-pill:not(.disabled) .slot-avail {
+    @apply bg-emerald-500/20 text-emerald-300 border border-emerald-500/30;
+  }
+  .slot-pill.disabled .slot-avail {
+    @apply bg-neutral-800 text-neutral-500;
+  }
+  .slot-pill.selected .slot-avail {
+    @apply bg-white/20 text-white border-white/30;
+  }
+
   .step-actions {
     @apply flex justify-between items-center mt-8 pt-6 border-t gap-4;
     border-color: rgba(255, 255, 255, 0.06);
@@ -916,7 +1038,8 @@ html.lenis, html.lenis body {
 
   /* --- BOSCH CAR SERVICE VERTICAL SIDE PYLONS --- */
   .bosch-pylon {
-    @apply absolute top-[180px] z-[50] w-[90px] h-[380px] py-4 px-2.5 rounded-2xl border transition-[border-color,box-shadow,transform] duration-500 select-none overflow-hidden flex flex-col items-center justify-between gap-3;
+    @apply absolute z-[50] w-[90px] h-[380px] py-4 px-2.5 rounded-2xl border transition-[border-color,box-shadow,transform] duration-500 select-none overflow-hidden flex flex-col items-center justify-between gap-3;
+    top: var(--pylon-top);
     background: linear-gradient(180deg, rgba(0, 36, 71, 0.96) 0%, rgba(6, 14, 32, 0.96) 100%);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -989,6 +1112,7 @@ html.lenis, html.lenis body {
 @layer components {
   @media (max-width: 768px) {
     .app-header { @apply py-3 px-4; }
+    .top-marques-bar { margin-top: var(--header-h-mobile); }
     .status-indicator, .brand-sub { @apply hidden; }
     .hotline-btn span { @apply hidden; }
     .top-marques-container { @apply px-4 flex-col items-start gap-2; }
@@ -1013,7 +1137,68 @@ html.lenis, html.lenis body {
     .job-card { @apply static mt-8; }
   }
   @media (max-width: 480px) {
-    .step-actions { @apply flex-col-reverse; }
+    
+  /* --- 10.1 BESPOKE APPOINTMENT CALENDAR ARCHITECTURE --- */
+  .booking-calendar-suite {
+    @apply transition-all duration-300;
+  }
+  .cal-day-cell {
+    @apply min-h-[44px] sm:min-h-[48px] p-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 flex flex-col items-center justify-center relative cursor-pointer select-none border border-transparent;
+  }
+  .cal-day-cell.cal-other-month {
+    @apply opacity-20 pointer-events-none text-neutral-600;
+  }
+  .cal-day-cell.cal-past {
+    @apply opacity-25 cursor-not-allowed pointer-events-none text-neutral-600;
+  }
+  .cal-day-cell.cal-available {
+    @apply text-neutral-200 bg-white/[0.02] hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/40;
+  }
+  .cal-day-cell.cal-today {
+    @apply border-blue-500/50 bg-blue-500/10 text-blue-300 font-semibold;
+  }
+  .cal-day-cell.cal-selected {
+    @apply bg-blue-600 text-white font-bold border-blue-400 scale-[1.03] z-10;
+    box-shadow: 0 4px 20px rgba(30, 96, 255, 0.45);
+  }
+  .cal-day-cell .cal-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5 transition-colors;
+  }
+  .cal-day-cell.cal-selected .cal-dot {
+    @apply bg-white;
+  }
+  .cal-nav-btn:disabled {
+    @apply opacity-30 cursor-not-allowed pointer-events-none;
+  }
+
+  /* Enhanced Luxury Slot Pills */
+  .slot-pill {
+    @apply py-2 px-2.5 min-h-[44px] rounded-xl text-center font-body text-xs cursor-pointer flex items-center justify-between transition-all duration-200 text-neutral-200 border border-neutral-800 bg-[#0E131F];
+  }
+  .slot-pill:hover {
+    @apply border-blue-500/40 text-blue-300 bg-blue-600/15;
+  }
+  .slot-pill.selected {
+    @apply bg-blue-600 border-blue-400 text-white font-medium;
+    box-shadow: 0 4px 16px rgba(30, 96, 255, 0.45);
+  }
+  .slot-pill.disabled {
+    @apply opacity-25 cursor-not-allowed pointer-events-none border-transparent bg-neutral-900/50 text-neutral-600;
+  }
+  .slot-pill .slot-avail {
+    @apply text-[10px] py-0.5 px-1.5 rounded-md font-light;
+  }
+  .slot-pill:not(.disabled) .slot-avail {
+    @apply bg-emerald-500/20 text-emerald-300 border border-emerald-500/30;
+  }
+  .slot-pill.disabled .slot-avail {
+    @apply bg-neutral-800 text-neutral-500;
+  }
+  .slot-pill.selected .slot-avail {
+    @apply bg-white/20 text-white border-white/30;
+  }
+
+  .step-actions { @apply flex-col-reverse; }
     .step-actions .btn { @apply w-full justify-center; }
     .modal-secondary-actions { @apply grid-cols-1; }
   }

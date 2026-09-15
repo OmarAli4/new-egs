@@ -97,6 +97,7 @@ class Booking(models.Model):
     customer_phone = models.CharField("رقم الهاتف", max_length=20)
     district = models.CharField("المنطقة", max_length=50, choices=DISTRICT_CHOICES, default='October')
     address_notes = models.TextField("ملاحظات العنوان / الموقع", blank=True)
+    customer_notes = models.TextField("طلب وملاحظات العميل بالتفصيل", blank=True, default="")
     
     car_make = models.CharField("ماركة السيارة", max_length=100)
     car_model = models.CharField("موديل السيارة", max_length=100)
@@ -104,12 +105,12 @@ class Booking(models.Model):
     plate_number = models.CharField("رقم اللوحة", max_length=50, blank=True)
     
     service = models.ForeignKey(Service, on_delete=models.PROTECT, verbose_name="الخدمة المختارة")
-    booking_date = models.DateField("تاريخ الحجز")
+    booking_date = models.DateField("تاريخ الحجز", db_index=True)
     booking_time = models.CharField("وقت الحجز", max_length=50)
     
     total_price = models.DecimalField("الإجمالي (ج.م)", max_digits=10, decimal_places=2)
-    status = models.CharField("حالة أمر العمل", max_length=20, choices=STATUS_CHOICES, default='confirmed')
-    created_at = models.DateTimeField("تاريخ الإنشاء", auto_now_add=True)
+    status = models.CharField("حالة أمر العمل", max_length=20, choices=STATUS_CHOICES, default='confirmed', db_index=True)
+    created_at = models.DateTimeField("تاريخ الإنشاء", auto_now_add=True, db_index=True)
 
     def __str__(self):
         return f"{self.ticket_code} - {self.customer_name} ({self.service.title})"
@@ -117,3 +118,23 @@ class Booking(models.Model):
     class Meta:
         verbose_name = "حجز صيانة"
         verbose_name_plural = "حجوزات الصيانة"
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['booking_date', 'status']),
+        ]
+
+
+class SiteSetting(models.Model):
+    site_title = models.CharField("اسم المركز / الورشة", max_length=150, default="EGS Garage - ورشة صيانة متنقلة")
+    hotline_number = models.CharField("رقم التليفون المكتوب في اليافطه (الهيدر والمجسم والفرع)", max_length=30, default="01019900990")
+    short_hotline = models.CharField("الرقم المختصر (مثل 19900)", max_length=20, default="19900")
+    whatsapp_number = models.CharField("رقم الواتساب للاستفسارات", max_length=30, default="201019900990")
+    instapay_number = models.CharField("رقم انستاباي للدفع الرقمي", max_length=30, default="01019900990")
+    center_address = models.CharField("عنوان الفرع الرئيسي", max_length=250, default="مركز EGS الرئيسي - المنطقة الصناعية، مدينة 6 أكتوبر")
+
+    def __str__(self):
+        return f"إعدادات المنصة - رقم اليافطة: {self.hotline_number}"
+
+    class Meta:
+        verbose_name = "إعدادات المنصة ورقم اليافطة"
+        verbose_name_plural = "إعدادات المنصة ورقم اليافطة"

@@ -1,0 +1,39 @@
+<!-- INFINITE SMOOTH CIRCULAR CAROUSEL -->
+        <section class="carousel-section">
+            <div class="carousel-header">
+                <div class="sec-title">
+                    <i data-feather="repeat"></i>
+                    <span>الخدمات الأكثر طلباً ومبيعاً (Best Sellers)</span>
+                </div>
+            </div>
+
+            <div class="carousel-track-wrapper" id="carouselWrapper">
+                <div class="carousel-track infinite-loop" id="carouselTrack">
+                    {% for ps in popular_services %}
+                    <div class="carousel-card" onclick="quickSelectService('{{ ps.id }}')">
+                        <div class="carousel-badge"><i data-feather="award"></i> الأكثر طلباً</div>
+                        <div class="carousel-icon"><i data-feather="tool"></i></div>
+                        <h4 class="carousel-title">{{ ps.title }}</h4>
+                        <p class="carousel-desc">{{ ps.description|truncatewords:10 }}</p>
+                        <div class="carousel-footer">
+                            <span class="carousel-duration"><i data-feather="clock"></i> {{ ps.duration_mins }} دقيقة</span>
+                            <span class="carousel-price tabular">{{ ps.price }} ج.م</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for ps in popular_services %}
+                    <div class="carousel-card" onclick="quickSelectService('{{ ps.id }}')">
+                        <div class="carousel-badge"><i data-feather="award"></i> الأكثر طلباً</div>
+                        <div class="carousel-icon"><i data-feather="tool"></i></div>
+                        <h4 class="carousel-title">{{ ps.title }}</h4>
+                        <p class="carousel-desc">{{ ps.description|truncatewords:10 }}</p>
+                        <div class="carousel-footer">
+                            <span class="carousel-duration"><i data-feather="clock"></i> {{ ps.duration_mins }} دقيقة</span>
+                            <span class="carousel-price tabular">{{ ps.price }} ج.م</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>

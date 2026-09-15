@@ -1,0 +1,38 @@
+{% load static %}
+<!-- ROLLS-ROYCE PINNED HERO STAGE -->
+            <section class="ecommerce-banner-slider" id="ecommerceSlider">
+            <div class="slider-wrapper">
+                <!-- Slide 1 (LCP Hero Element) -->
+                <div class="slider-item active" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_mobile_service.webp' %}" alt="ورشة الصيانة المتنقلة" class="slider-img" fetchpriority="high" />
+                </div>
+                <!-- Slide 2 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_promo_discount.webp' %}" alt="خصم 15% على الصيانة" class="slider-img" loading="lazy" />
+                </div>
+                <!-- Slide 3 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_diagnostic_scan.webp' %}" alt="فحص كمبيوتر ألماني مجاناً" class="slider-img" loading="lazy" />
+                </div>
+                <!-- Slide 4 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_warranty_speed.webp' %}" alt="وصول في 45 دقيقة وضمان 6 أشهر" class="slider-img" loading="lazy" />
+                </div>
+            </div>
+
+            <!-- Arrows Controls (Feather Icons) -->
+            <button type="button" class="slider-nav-btn prev-btn" onclick="prevBannerSlide(event)" aria-label="السابق">
+                <i data-feather="chevron-right"></i>
+            </button>
+            <button type="button" class="slider-nav-btn next-btn" onclick="nextBannerSlide(event)" aria-label="التالي">
+                <i data-feather="chevron-left"></i>
+            </button>
+
+            <!-- Dots Pagination -->
+            <div class="slider-pagination" id="bannerDots">
+                <span class="dot active" onclick="setBannerSlide(0, event)"></span>
+                <span class="dot" onclick="setBannerSlide(1, event)"></span>
+                <span class="dot" onclick="setBannerSlide(2, event)"></span>
+                <span class="dot" onclick="setBannerSlide(3, event)"></span>
+            </div>
+        </section>

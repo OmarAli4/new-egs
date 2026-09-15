@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timedelta
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
@@ -8,8 +8,8 @@ from .models import Service, CarMake, CarModel, TimeSlot, Booking
 
 @ensure_csrf_cookie
 def index(request):
-    services = Service.objects.all()
-    popular_services = Service.objects.filter(is_popular=True)
+    services = list(Service.objects.all())
+    popular_services = [s for s in services if s.is_popular]
     car_makes = CarMake.objects.prefetch_related('models').all()
     
     today = datetime.now().date()
@@ -17,7 +17,7 @@ def index(request):
     
     context = {
         'services': services,
-        'popular_services': popular_services if popular_services.exists() else services[:3],
+        'popular_services': popular_services if popular_services else services[:3],
         'car_makes': car_makes,
         'upcoming_dates': dates,
     }
@@ -176,23 +176,43 @@ def api_create_booking(request):
         data = json.loads(request.body.decode('utf-8'))
         
         service_id = data.get('service_id')
-        service = Service.objects.get(id=service_id)
+        try:
+            service = Service.objects.get(id=service_id)
+        except (Service.DoesNotExist, ValueError, TypeError):
+            service = Service.objects.first()
         
         booking_date_str = data.get('booking_date')
-        booking_date = datetime.strptime(booking_date_str, '%Y-%m-%d').date()
+        try:
+            booking_date = datetime.strptime(booking_date_str, '%Y-%m-%d').date()
+            if booking_date < datetime.now().date():
+                booking_date = datetime.now().date()
+        except (ValueError, TypeError):
+            booking_date = datetime.now().date()
         
+        from django.utils.html import escape
+
+        cust_name = escape(str(data.get('customer_name', 'عميل مسجل')).strip()[:150])
+        cust_phone = escape(str(data.get('customer_phone', '')).strip()[:20])
+        district_val = str(data.get('district', 'October')).strip()[:50]
+        addr_notes = escape(str(data.get('address_notes', '')).strip()[:500])
+        cust_notes = escape(str(data.get('customer_notes', '')).strip()[:1000])
+        c_make = escape(str(data.get('car_make', '')).strip()[:100])
+        c_model = escape(str(data.get('car_model', '')).strip()[:100])
+        c_plate = escape(str(data.get('plate_number', '')).strip()[:50])
+
         booking = Booking.objects.create(
-            customer_name=data.get('customer_name', 'عميل مسجل'),
-            customer_phone=data.get('customer_phone', ''),
-            district=data.get('district', 'October'),
-            address_notes=data.get('address_notes', ''),
-            car_make=data.get('car_make', ''),
-            car_model=data.get('car_model', ''),
-            car_year=int(data.get('car_year', 2022)),
-            plate_number=data.get('plate_number', ''),
+            customer_name=cust_name or 'عميل مسجل',
+            customer_phone=cust_phone,
+            district=district_val,
+            address_notes=addr_notes,
+            customer_notes=cust_notes,
+            car_make=c_make,
+            car_model=c_model,
+            car_year=int(data.get('car_year', 2023)),
+            plate_number=c_plate,
             service=service,
             booking_date=booking_date,
-            booking_time=data.get('booking_time', '10:00 AM'),
+            booking_time=str(data.get('booking_time', '10:00 AM')).strip()[:50],
             total_price=service.price,
             status='confirmed'
         )
@@ -209,6 +229,7 @@ def api_create_booking(request):
                 'car_info': f"{booking.car_make} {booking.car_model} ({booking.car_year})",
                 'district_display': booking.get_district_display(),
                 'address_notes': booking.address_notes,
+                'customer_notes': booking.customer_notes,
                 'booking_date': booking.booking_date.strftime('%Y-%m-%d'),
                 'booking_time': booking.booking_time,
                 'total_price': float(booking.total_price),
@@ -238,3 +259,27 @@ def api_booking_status(request, ticket_code):
         })
     except Booking.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'امر العمل غير موجود'}, status=404)
+
+@require_GET
+def api_health(request):
+    from django.db import connection
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+
+    return JsonResponse({
+        'status': 'healthy' if db_status == 'connected' else 'unhealthy',
+        'database': db_status,
+        'timestamp': datetime.now().isoformat()
+    })
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def print_job_card(request, booking_id):
+    booking = get_object_or_404(Booking.objects.select_related('service'), id=booking_id)
+    return render(request, 'admin/print_job_card.html', {'booking': booking})
+

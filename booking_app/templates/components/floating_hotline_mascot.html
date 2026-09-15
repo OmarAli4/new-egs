@@ -1,0 +1,348 @@
+<!-- 7. FLOATING HOTLINE MASCOT WIDGET (PURE VISUAL - BOSCH DIAGNOSTIC TABLET WITH SHUTTERS & TYPEWRITER) -->
+<aside class="fixed bottom-6 left-6 z-50 pointer-events-none select-none cursor-default transition-all duration-300 scale-90 sm:scale-100 origin-bottom-left will-change-transform transform-gpu" style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;" id="floatingHotlineMascot" aria-label="رقم الخط الساخن للمركز">
+    <!-- Transparent Frameless Animated SVG Stage (GPU Hardware Isolated) -->
+    <div class="relative w-[285px] h-[95px] sm:w-[325px] sm:h-[110px] filter drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]" style="contain: layout paint;">
+        <svg viewBox="0 0 315 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <defs>
+                <!-- Headlight Beam Gradient -->
+                <linearGradient id="headlightBeam" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55"/>
+                    <stop offset="60%" stop-color="#1E60FF" stop-opacity="0.15"/>
+                    <stop offset="100%" stop-color="#1E60FF" stop-opacity="0"/>
+                </linearGradient>
+
+                <!-- Tablet Screen Gradient (Deep Obsidian Blue) -->
+                <linearGradient id="tabletScreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#061124"/>
+                    <stop offset="50%" stop-color="#030814"/>
+                    <stop offset="100%" stop-color="#01040A"/>
+                </linearGradient>
+
+                <!-- Van Body Gradient -->
+                <linearGradient id="vanBodyGrad" x1="0%" y1="0%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#111B2E"/>
+                    <stop offset="50%" stop-color="#080F1D"/>
+                    <stop offset="100%" stop-color="#04070E"/>
+                </linearGradient>
+
+                <!-- Wheel Gradient -->
+                <radialGradient id="wheelRim" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#94A3B8"/>
+                    <stop offset="40%" stop-color="#334155"/>
+                    <stop offset="100%" stop-color="#0F172A"/>
+                </radialGradient>
+
+                <!-- Screen Clip Path for Shutter Doors -->
+                <clipPath id="tabletScreenClip">
+                    <rect x="141" y="9" width="158" height="34" rx="3.5"/>
+                </clipPath>
+            </defs>
+
+            <!-- 1. Road Track & Animated Dashes -->
+            <line x1="10" y1="92" x2="305" y2="92" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
+            <line x1="15" y1="96" x2="300" y2="96" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="10 14" stroke-opacity="0.7" class="road-animated-dash"/>
+
+            <!-- 2. Animated Headlight Beam (Cast forward from Van) -->
+            <polygon points="120,67 195,54 195,88 120,77" fill="url(#headlightBeam)" class="headlight-pulse"/>
+
+            <!-- 3. ANIMATED VAN GROUP (Vehicle + Technician emerging from window holding tablet) -->
+            <g class="van-chassis-bounce">
+                <!-- Van Shadow -->
+                <ellipse cx="68" cy="90" rx="55" ry="4" fill="#000000" fill-opacity="0.8"/>
+
+                <!-- Van Main Body (High-Roof European Service Van) -->
+                <path d="M 16 78 L 16 52 C 16 46 20 42 26 42 L 80 42 C 86 42 94 46 98 52 L 114 62 C 117 65 119 69 119 73 L 119 78 Z" 
+                      fill="url(#vanBodyGrad)" stroke="#1E60FF" stroke-width="1.2"/>
+
+                <!-- Windshield & Front Quarter Glass -->
+                <path d="M 82 46 L 96 53 L 110 63 L 82 63 Z" fill="#38BDF8" fill-opacity="0.25" stroke="#38BDF8" stroke-width="0.8"/>
+                
+                <!-- Rear Tinted Side Window -->
+                <rect x="26" y="47" width="22" height="15" rx="2" fill="#030712" stroke="#38BDF8" stroke-width="0.6" stroke-opacity="0.5"/>
+                
+                <!-- Open Driver Window Cavity (Dark Interior) -->
+                <rect x="52" y="46" width="26" height="16" rx="2" fill="#02040A" stroke="#1E60FF" stroke-width="0.8"/>
+
+                <!-- ============================================== -->
+                <!-- TECHNICIAN LEANING OUT OF DRIVER'S WINDOW -->
+                <!-- ============================================== -->
+                <g class="technician-in-window">
+                    <!-- Upper Torso / Uniform inside window -->
+                    <path d="M 55 58 L 57 46 C 57 44 60 42 64 42 L 72 42 C 75 42 77 44 77 46 L 76 58 Z" fill="#142646" stroke="#1E60FF" stroke-width="0.8"/>
+                    <!-- Shoulder Badge Strip -->
+                    <rect x="58" y="43" width="3" height="4" fill="#38BDF8" rx="0.5"/>
+                    <rect x="70" y="43" width="3" height="4" fill="#38BDF8" rx="0.5"/>
+
+                    <!-- Head & Cap (Emerging above door frame) -->
+                    <circle cx="66" cy="36" r="5.5" fill="#F87171"/> <!-- Friendly Face Tone -->
+                    <!-- Cap Visor & Dome -->
+                    <path d="M 60 35 C 60 30 63 28 67 28 C 71 28 73 30 73 35 Z" fill="#1E60FF"/>
+                    <path d="M 62 35 L 75 34" stroke="#38BDF8" stroke-width="1.8" stroke-linecap="round"/>
+
+                    <!-- Left Arm: Resting elbow on the open window sill -->
+                    <path d="M 57 46 Q 52 50 55 55" fill="none" stroke="#142646" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="55" cy="55" r="2" fill="#F87171"/>
+
+                    <!-- Right Arm: Extending forward firmly gripping the diagnostic tablet -->
+                    <path d="M 72 43 Q 96 34 130 26" fill="none" stroke="#142646" stroke-width="4" stroke-linecap="round"/>
+                    <!-- Blue Cuff -->
+                    <rect x="125" y="22" width="4" height="8" rx="1" fill="#1E60FF"/>
+                    <!-- Technician's Hand gripping the tablet left bumper -->
+                    <path d="M 129 21 C 134 21 135 23 135 26 C 135 29 134 31 129 31 Z" fill="#F87171"/>
+                </g>
+
+                <!-- Door Panel Overlap (Sits in front of lower body for true window depth) -->
+                <line x1="51" y1="62" x2="79" y2="62" stroke="#1E60FF" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- Livery Decal Stripe (Cobalt Blue + Electric Cyan) -->
+                <path d="M 16 67 L 118 67 L 117 71 L 16 71 Z" fill="#1E60FF"/>
+                <path d="M 16 72 L 116 72 L 115 73.5 L 16 73.5 Z" fill="#38BDF8"/>
+
+                <!-- EGS Logo Decal on Van Side -->
+                <text x="28" y="64" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="7" font-weight="800" letter-spacing="0.5">EGS</text>
+                <text x="44" y="64" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="5" font-weight="600">صيانة</text>
+
+                <!-- Headlight (Glowing White/Amber LED) -->
+                <circle cx="117" cy="71" r="2.5" fill="#FFFFFF" filter="drop-shadow(0 0 4px #38BDF8)"/>
+                
+                <!-- Taillight (Ruby Red) -->
+                <rect x="15.5" y="55" width="2" height="7" rx="1" fill="#EF4444" filter="drop-shadow(0 0 3px #EF4444)"/>
+
+                <!-- Front Bumper -->
+                <path d="M 116 75 L 122 75 C 123 75 124 77 123 79 L 115 79 Z" fill="#1E293B"/>
+
+                <!-- Wheel Arches Cutouts -->
+                <path d="M 32 78 A 12 12 0 0 1 56 78 Z" fill="#050B14"/>
+                <path d="M 88 78 A 12 12 0 0 1 112 78 Z" fill="#050B14"/>
+            </g>
+
+            <!-- 4. ANIMATED ROTATING WHEELS -->
+            <!-- Rear Wheel (Center at 44, 79) -->
+            <g class="wheel-spin" style="transform-origin: 44px 79px;">
+                <circle cx="44" cy="79" r="10" fill="#0B0F19" stroke="#1E293B" stroke-width="1.8"/>
+                <circle cx="44" cy="79" r="6" fill="url(#wheelRim)"/>
+                <line x1="44" y1="73" x2="44" y2="85" stroke="#94A3B8" stroke-width="1"/>
+                <line x1="38" y1="79" x2="50" y2="79" stroke="#94A3B8" stroke-width="1"/>
+                <line x1="40" y1="75" x2="48" y2="83" stroke="#94A3B8" stroke-width="0.8"/>
+                <line x1="40" y1="83" x2="48" y2="75" stroke="#94A3B8" stroke-width="0.8"/>
+                <circle cx="44" cy="79" r="2" fill="#38BDF8"/>
+            </g>
+
+            <!-- Front Wheel (Center at 100, 79) -->
+            <g class="wheel-spin" style="transform-origin: 100px 79px;">
+                <circle cx="100" cy="79" r="10" fill="#0B0F19" stroke="#1E293B" stroke-width="1.8"/>
+                <circle cx="100" cy="79" r="6" fill="url(#wheelRim)"/>
+                <line x1="100" y1="73" x2="100" y2="85" stroke="#94A3B8" stroke-width="1"/>
+                <line x1="94" y1="79" x2="106" y2="79" stroke="#94A3B8" stroke-width="1"/>
+                <line x1="96" y1="75" x2="104" y2="83" stroke="#94A3B8" stroke-width="0.8"/>
+                <line x1="96" y1="83" x2="104" y2="75" stroke="#94A3B8" stroke-width="0.8"/>
+                <circle cx="100" cy="79" r="2" fill="#38BDF8"/>
+            </g>
+
+            <!-- ============================================== -->
+            <!-- 5. BOSCH DIAGNOSTIC RUGGED TABLET DEVICE -->
+            <!-- ============================================== -->
+            <g class="tablet-device-group" filter="drop-shadow(0 0 12px rgba(30, 96, 255, 0.4))">
+                
+                <!-- Rugged Titanium Armored Outer Chassis -->
+                <rect x="133" y="6" width="174" height="40" rx="7" fill="#0B132B" stroke="#1E293B" stroke-width="2"/>
+
+                <!-- 4 Heavy-Duty Armored Rubber Bumper Corners (Bosch Ruggedized Look) -->
+                <!-- Top-Left Bumper -->
+                <path d="M 133 14 L 133 10 C 133 8 135 6 137 6 L 143 6" stroke="#1E60FF" stroke-width="2.5" fill="none"/>
+                <!-- Top-Right Bumper -->
+                <path d="M 299 6 L 303 6 C 305 6 307 8 307 10 L 307 14" stroke="#1E60FF" stroke-width="2.5" fill="none"/>
+                <!-- Bottom-Right Bumper -->
+                <path d="M 307 38 L 307 42 C 307 44 305 46 303 46 L 299 46" stroke="#1E60FF" stroke-width="2.5" fill="none"/>
+                <!-- Bottom-Left Bumper -->
+                <path d="M 143 46 L 137 46 C 135 46 133 44 133 42 L 133 38" stroke="#1E60FF" stroke-width="2.5" fill="none"/>
+
+                <!-- Side Grip Ridges (Industrial Rubber Texture on Left & Right) -->
+                <line x1="131" y1="18" x2="131" y2="34" stroke="#38BDF8" stroke-width="1.8" stroke-dasharray="2 3"/>
+                <line x1="309" y1="18" x2="309" y2="34" stroke="#38BDF8" stroke-width="1.8" stroke-dasharray="2 3"/>
+
+                <!-- High-Resolution OLED Diagnostic Screen -->
+                <rect x="141" y="9" width="158" height="34" rx="3.5" fill="url(#tabletScreenGrad)" stroke="#1E60FF" stroke-width="0.8"/>
+
+                <!-- SCREEN TOP BAR: LIVE DIAGNOSTIC OSCILLOSCOPE WAVE -->
+                <g class="screen-telemetry-bar">
+                    <!-- Oscilloscope / Sensor ECG Pulse Wave (Pulsing Animation) -->
+                    <path d="M 145 16 L 158 16 L 161 11 L 164 21 L 167 10 L 170 22 L 173 16 L 188 16" 
+                          fill="none" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" class="diagnostic-pulse-wave"/>
+
+                    <!-- EGS Diagnostic Header Label -->
+                    <text x="245" y="16" text-anchor="middle" direction="rtl" fill="#60A5FA" font-family="'Cairo', sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.3">
+                        تشخيص فوري | الخط الساخن
+                    </text>
+                </g>
+
+                <!-- SCREEN MAIN CONTENT: PROMINENT PHONE NUMBER -->
+                <!-- OBD-II Active Connection Badge (Left) -->
+                <g transform="translate(145, 23)">
+                    <rect x="0" y="0" width="22" height="15" rx="2" fill="#1E60FF" fill-opacity="0.2" stroke="#38BDF8" stroke-width="0.6"/>
+                    <circle cx="4.5" cy="7.5" r="2" fill="#10B981" class="obd-pulse-dot"/>
+                    <text x="8" y="10" fill="#38BDF8" font-family="'Outfit', sans-serif" font-size="6" font-weight="800">OBD</text>
+                </g>
+
+                <!-- The Prominent Phone Number: Dynamic from Admin SiteSetting -->
+                <text id="tabletPhoneNumber" x="228" y="34" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#FFFFFF" font-family="'Alexandria', 'Outfit', monospace" font-size="14.5" font-weight="900" letter-spacing="1.4" class="tablet-number-glow">{{ site_settings.hotline_number|default:"01019900990" }}</text>
+
+                <!-- Screen Bottom Subtitle / Brand Badge -->
+                <text x="228" y="41" text-anchor="middle" direction="rtl" fill="#94A3B8" font-family="'Cairo', sans-serif" font-size="5.5" font-weight="500">
+                    مركز صيانة وفحص معتمد Bosch EGS
+                </text>
+
+                <!-- ============================================== -->
+                <!-- 6. HIGH-TECH SHUTTER DOORS (Slide Close / Open) -->
+                <!-- ============================================== -->
+                <g clip-path="url(#tabletScreenClip)">
+                    <!-- Left Shutter Door (Slides in from x=141 to meet at center x=220) -->
+                    <rect id="shutterDoorLeft" x="141" y="9" width="0" height="34" fill="#061226" stroke="#38BDF8" stroke-width="2" class="shutter-door-elem"/>
+                    
+                    <!-- Right Shutter Door (Slides in from x=299 to meet at center x=220) -->
+                    <rect id="shutterDoorRight" x="299" y="9" width="0" height="34" fill="#061226" stroke="#38BDF8" stroke-width="2" class="shutter-door-elem"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+</aside>
+
+<style>
+/* CSS Keyframes for High-Performance Pure SVG Animation (60 FPS) */
+@keyframes spinWheel {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes roadDashAnim {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -48; }
+}
+
+@keyframes vanMicroBounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-1.8px); }
+}
+
+@keyframes diagnosticWaveform {
+    0%, 100% { opacity: 0.9; stroke: #10B981; filter: drop-shadow(0 0 2px #10B981); }
+    50% { opacity: 0.45; stroke: #38BDF8; filter: drop-shadow(0 0 5px #38BDF8); }
+}
+
+@keyframes obdPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+@keyframes tabletGlowPulse {
+    0%, 100% { opacity: 0.88; }
+    50% { opacity: 1; }
+}
+
+@keyframes headlightPulse {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 0.5; }
+}
+
+.wheel-spin {
+    animation: spinWheel 0.75s linear infinite;
+}
+
+.road-animated-dash {
+    animation: roadDashAnim 0.75s linear infinite;
+}
+
+.van-chassis-bounce {
+    animation: vanMicroBounce 1.4s ease-in-out infinite;
+}
+
+.tablet-device-group {
+    animation: tabletGlowPulse 3s ease-in-out infinite;
+}
+
+.diagnostic-pulse-wave {
+    animation: diagnosticWaveform 1.6s ease-in-out infinite;
+}
+
+.obd-pulse-dot {
+    animation: obdPulse 1.1s ease-in-out infinite;
+    transform-origin: 149.5px 30.5px;
+}
+
+.tablet-number-glow {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 10px rgba(56, 189, 248, 0.65));
+}
+
+.headlight-pulse {
+    animation: headlightPulse 2s ease-in-out infinite;
+}
+
+/* Shutter Door Smooth Transition */
+.shutter-door-elem {
+    transition: width 0.45s cubic-bezier(0.7, 0, 0.3, 1), x 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+}
+</style>
+
+<script>
+(function() {
+    let isShutterRunning = false;
+
+    function runTabletShutterSequence() {
+        if (isShutterRunning) return;
+        const leftDoor = document.getElementById('shutterDoorLeft');
+        const rightDoor = document.getElementById('shutterDoorRight');
+        const phoneElem = document.getElementById('tabletPhoneNumber');
+        if (!leftDoor || !rightDoor || !phoneElem) return;
+
+        isShutterRunning = true;
+
+        // 1. Shutter doors slide closed to the center (meeting at x=220)
+        leftDoor.setAttribute('width', '80');
+        rightDoor.setAttribute('x', '220');
+        rightDoor.setAttribute('width', '80');
+
+        // 2. Behind closed doors: clear text
+        setTimeout(() => {
+            phoneElem.textContent = '';
+
+            // 3. Open shutter doors back up
+            setTimeout(() => {
+                leftDoor.setAttribute('width', '0');
+                rightDoor.setAttribute('x', '299');
+                rightDoor.setAttribute('width', '0');
+
+                // 4. Typewriter effect: write digits one by one
+                setTimeout(() => {
+                    const fullNumber = '{{ site_settings.hotline_number|default:"01019900990" }}';
+                    let currentLength = 0;
+                    const typeInterval = setInterval(() => {
+                        currentLength++;
+                        phoneElem.textContent = fullNumber.slice(0, currentLength);
+                        if (currentLength >= fullNumber.length) {
+                            clearInterval(typeInterval);
+                            isShutterRunning = false;
+                        }
+                    }, 65); // 65ms per digit
+                }, 400);
+
+            }, 380);
+
+        }, 420);
+    }
+
+    // Expose globally so splash loader can trigger it immediately
+    window.runTabletShutterSequence = runTabletShutterSequence;
+
+    // Trigger IMMEDIATELY when entering the site
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(runTabletShutterSequence, 300);
+        });
+    } else {
+        setTimeout(runTabletShutterSequence, 300);
+    }
+
+    // Repeat every 30 seconds exactly as requested
+    setInterval(runTabletShutterSequence, 30000);
+})();
+</script>

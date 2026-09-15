@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كارت عمل - {{ booking.ticket_code }} | EGS Elite Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #F8FAFC;
+            color: #0F172A;
+            padding: 24px;
+            direction: rtl;
+        }
+
+        .print-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .no-print-bar {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0F172A;
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #FFFFFF;
+        }
+
+        .btn-print {
+            background: #10B981;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-back {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .header-table {
+            width: 100%;
+            border-bottom: 3px solid #1E60FF;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #0F172A;
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: #64748B;
+            font-weight: 700;
+        }
+
+        .ticket-badge {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #1E60FF;
+            background: #EFF6FF;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid #DBEAFE;
+            display: inline-block;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .section-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #1E60FF;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #E2E8F0;
+            padding-bottom: 4px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #64748B;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .complaint-box {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-right: 4px solid #1E60FF;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+
+        .table-details {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .table-details th {
+            background: #0F172A;
+            color: white;
+            padding: 10px 12px;
+            text-align: right;
+            font-weight: 800;
+        }
+
+        .table-details td {
+            padding: 12px;
+            border-bottom: 1px solid #E2E8F0;
+            font-weight: 600;
+        }
+
+        .total-box {
+            background: #DCFCE7;
+            border: 1px solid #BBF7D0;
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .signatures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #CBD5E1;
+        }
+
+        .sig-box {
+            text-align: center;
+        }
+
+        .sig-line {
+            height: 50px;
+            border-bottom: 1px solid #94A3B8;
+            margin-top: 10px;
+        }
+
+        .warranty-note {
+            font-size: 11px;
+            color: #64748B;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+            .print-container {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar no-print">
+        <a href="javascript:history.back()" class="btn-back">← العودة للأدمن</a>
+        <div>
+            <span style="font-size: 13px; font-weight: 700; margin-left: 12px;">معاينة كارت العمل المطبوع</span>
+            <button onclick="window.print()" class="btn-print">🖨️ طباعة كارت العمل / الفاتورة</button>
+        </div>
+    </div>
+
+    <div class="print-container">
+        
+        <!-- HEADER -->
+        <table class="header-table">
+            <tr>
+                <td>
+                    <div class="brand-logo">EGS ELITE GARAGE 🚚</div>
+                    <div class="brand-sub">مركز صيانة السيارات المتنقلة والحلول المتكاملة</div>
+                    <div class="brand-sub">المنطقة الصناعية، مدينة 6 أكتوبر | هاتف: {{ site_settings.hotline_number|default:"01019900990" }}</div>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <div style="font-size: 12px; color: #64748B; font-weight: 700; margin-bottom: 4px;">كارت عمل صيانة وفحص</div>
+                    <div class="ticket-badge">{{ booking.ticket_code }}</div>
+                    <div style="font-size: 11px; color: #64748B; margin-top: 4px;">تاريخ الإصدار: {{ booking.created_at|date:"Y-m-d H:i" }}</div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- CUSTOMER & CAR INFO GRID -->
+        <div class="grid-2">
+            <!-- Customer Box -->
+            <div class="section-box">
+                <div class="section-title">👤 بيانات العميل والموقع</div>
+                <div class="info-row">
+                    <span class="info-label">اسم العميل:</span>
+                    <span class="info-value">{{ booking.customer_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">رقم الهاتف:</span>
+                    <span class="info-value">{{ booking.customer_phone }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">المنطقة / الموقع:</span>
+                    <span class="info-value">{{ booking.get_district_display }}</span>
+                </div>
+                {% if booking.address_notes %}
+                <div class="info-row">
+                    <span class="info-label">عنوان التفصيلي:</span>
+                    <span class="info-value">{{ booking.address_notes }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Car & Time Box -->
+            <div class="section-box">
+                <div class="section-title">🚘 بيانات السيارة والموعد</div>
+                <div class="info-row">
+                    <span class="info-label">السيارة:</span>
+                    <span class="info-value">{{ booking.car_make }} {{ booking.car_model }} ({{ booking.car_year }})</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">رقم اللوحة:</span>
+                    <span class="info-value">{{ booking.plate_number|default:"غير مدون" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">موعد الصيانة:</span>
+                    <span class="info-value">{{ booking.booking_date|date:"Y-m-d" }} - {{ booking.booking_time }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">حالة أمر العمل:</span>
+                    <span class="info-value">{{ booking.get_status_display }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOMER NOTES / COMPLAINT -->
+        <div class="complaint-box">
+            <div style="font-weight: 800; color: #1E60FF; font-size: 13px; margin-bottom: 4px;">✍️ شكوى وطلب العميل المسجل:</div>
+            <div style="font-size: 13px; color: #1E293B; font-weight: 600; line-height: 1.5;">
+                {{ booking.customer_notes|default:"صيانة دورية وتفقد الفحوصات الأساسية للسيارة" }}
+            </div>
+        </div>
+
+        <!-- SERVICE DETAILS TABLE -->
+        <table class="table-details">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">الخدمة / عملية الصيانة</th>
+                    <th style="width: 20%;">القسم</th>
+                    <th style="width: 15%;">المدة التقديرية</th>
+                    <th style="width: 15%; text-align: left;">المبلغ (ج.م)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong style="color: #0F172A; font-size: 14px;">{{ booking.service.title }}</strong>
+                        <div style="font-size: 11px; color: #64748B; margin-top: 3px;">{{ booking.service.description }}</div>
+                    </td>
+                    <td>{{ booking.service.get_category_display }}</td>
+                    <td>{{ booking.service.duration_mins }} دقيقة</td>
+                    <td style="text-align: left; font-weight: 800; color: #059669; font-size: 14px;">{{ booking.total_price }} ج.م</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TOTAL BOX -->
+        <div class="total-box">
+            <span style="font-size: 15px; font-weight: 800; color: #166534;">إجمالي المستحق سداده (شامل الصيانة والخدمة المتنقلة):</span>
+            <span style="font-size: 22px; font-weight: 900; color: #15803D;">{{ booking.total_price }} جنيه مصري</span>
+        </div>
+
+        <!-- INCLUDED FEATURES / WARRANTY -->
+        {% if booking.service.features_list %}
+        <div style="margin-bottom: 20px; font-size: 12px; background: #F8FAFC; padding: 12px; border-radius: 8px; border: 1px solid #E2E8F0;">
+            <strong style="color: #0F172A;">النقاط المشمولة في الفحص:</strong>
+            <span style="color: #475569;">{{ booking.service.included_features }}</span>
+        </div>
+        {% endif %}
+
+        <!-- SIGNATURES -->
+        <div class="signatures-grid">
+            <div class="sig-box">
+                <span style="font-size: 13px; font-weight: 700; color: #475569;">توقيع واستلام الفني المسؤول</span>
+                <div class="sig-line"></div>
+            </div>
+            <div class="sig-box">
+                <span style="font-size: 13px; font-weight: 700; color: #475569;">توقيع العميل بالموافقة والاستلام</span>
+                <div class="sig-line"></div>
+            </div>
+        </div>
+
+        <!-- WARRANTY FOOTER NOTE -->
+        <div class="warranty-note">
+            🛡️ جميع أعمال الصيانة وقطع الغيار المعتمدة مشمولة بضمان EGS الذهبي لمدة 60 يوماً أو 3000 كم أيهما أقرب.<br>
+            شكراً لثقتكم بمركز EGS لخدمات السيارات المتنقلة 🚚
+        </div>
+
+    </div>
+
+</body>
+</html>

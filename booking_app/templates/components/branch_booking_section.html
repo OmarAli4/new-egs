@@ -1,0 +1,235 @@
+{% load static %}
+<!-- IN-CENTER BRANCH BOOKING & FACILITIES ATELIER SECTION -->
+<section class="branch-atelier-section max-w-5xl mx-auto px-2 sm:px-4 py-12 md:py-16 my-8 relative z-20" id="inCenterBranchSection">
+    
+    <!-- Section Header Badge & Title -->
+    <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 text-xs font-light text-[#3B82F6] bg-blue-500/10 border border-blue-500/20 py-1.5 px-4 rounded-full uppercase tracking-widest mb-3">
+            <i data-feather="home" class="w-3.5 h-3.5"></i>
+            <span>مراكز الصيانة المعتمدة — EGS & Bosch Atelier</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-display font-light text-white tracking-wide mb-3">
+            حجز موعد زيارة في مركز الصيانة الرئيسي
+        </h2>
+        <p class="text-sm text-neutral-400 font-light leading-relaxed">
+            استمتع بتجربة صيانة استثنائية داخل ورشاتنا المركزية المجهزة بأحدث منصات الفحص والتشخيص الألمانية مع استراحة VIP مكيفة واستقبال فوري بدون انتظار.
+        </p>
+    </div>
+
+    <!-- 2-Column Grid: Branches Info (Right/Leading) + Appointment Form (Left/Trailing) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-5xl mx-auto">
+        
+        <!-- COLUMN 1: BRANCHES & FACILITIES OVERVIEW (5 COLS) -->
+        <div class="lg:col-span-5 space-y-5">
+            
+            <!-- Branch 1: 6th of October Main Center -->
+            <div class="rounded-2xl border border-white/10 bg-[#080808]/90 p-6 backdrop-blur-xl hover:border-blue-500/30 transition-all duration-300">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i data-feather="map-pin" class="w-5 h-5 text-[#3B82F6]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-display font-medium text-white">فرع 6 أكتوبر الرئيسي</h4>
+                            <span class="text-[11px] text-blue-400 font-light">مركز Bosch Car Service المعتمد</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-0.5 px-2.5 rounded-full">مفتوح الآن</span>
+                </div>
+                <p class="text-xs text-neutral-400 font-light leading-relaxed mb-4">
+                    المنطقة الصناعية الثالثة - مجمع خدمات السيارات، مجهز بـ 8 حارات فحص متطورة ورافعات هيدروليكية ألمانية.
+                </p>
+                <div class="text-xs text-neutral-300 space-y-1.5 border-t border-white/5 pt-3">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="clock" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span>مواعيد العمل: يومياً من 9:00 ص حتى 10:00 م</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-feather="phone" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span class="tabular">{{ site_settings.hotline_number|default:"01019900990" }} (الخط الساخن)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch 2: Sheikh Zayed Center -->
+            <div class="rounded-2xl border border-white/10 bg-[#080808]/90 p-6 backdrop-blur-xl hover:border-blue-500/30 transition-all duration-300">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i data-feather="map-pin" class="w-5 h-5 text-[#3B82F6]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-display font-medium text-white">فرع الشيخ زايد</h4>
+                            <span class="text-[11px] text-blue-400 font-light">مركز الفحص السريع والضيافة</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-0.5 px-2.5 rounded-full">مفتوح الآن</span>
+                </div>
+                <p class="text-xs text-neutral-400 font-light leading-relaxed mb-4">
+                    المحور المركزي - بالقرب من هايبر وان، مخصص للصيانات الدورية والفحص السريع وأعمال التكييف والكهرباء.
+                </p>
+                <div class="text-xs text-neutral-300 space-y-1.5 border-t border-white/5 pt-3">
+                    <div class="flex items-center gap-2">
+                        <i data-feather="clock" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span>مواعيد العمل: يومياً من 10:00 ص حتى 11:00 م</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-feather="phone" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span class="tabular">{{ site_settings.hotline_number|default:"01019900990" }} (الخط الساخن)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Facilities Perks Pill List -->
+            <div class="rounded-2xl border border-white/5 bg-[#050505] p-5">
+                <h5 class="text-xs font-medium text-neutral-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i data-feather="award" class="w-4 h-4 text-blue-400"></i>
+                    <span>مزايا زيارة المركز المعتمد</span>
+                </h5>
+                <ul class="space-y-2 text-xs text-neutral-400 font-light">
+                    <li class="flex items-center gap-2">
+                        <i data-feather="check" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span>منصات ضبط زوايا ليزر 3D متقدمة ومعايرة رادار الرادار الأمامي</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-feather="check" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span>فحص شامل للفرامل والعفشة والفتيس بأحدث أجهزة Bosch KTS</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i data-feather="check" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                        <span>استراحة VIP مكيفة مزودة بشاشات متابعة حية لحارة الصيانة وواي فاي</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- COLUMN 2: APPOINTMENT SCHEDULING FORM (7 COLS) -->
+        <div class="lg:col-span-7">
+            <div class="rounded-3xl border border-blue-500/20 bg-gradient-to-b from-[#0B0F19] to-[#06080D] p-7 md:p-9 shadow-2xl backdrop-blur-md relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-60 h-60 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
+                            <i data-feather="calendar" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-display font-medium text-white">نموذج حجز موعد الزيارة</h3>
+                            <p class="text-xs text-neutral-400 font-light">احجز مسبقاً لضمان استقبال سيارتك بدون انتظار</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 py-1 px-3 rounded-full hidden sm:inline-flex">
+                        حجز فوري مؤكد
+                    </span>
+                </div>
+
+                <form id="formInCenterBranchBooking" onsubmit="handleBranchBookingSubmit(event)">
+                    
+                    <!-- 1. Select Branch -->
+                    <div class="form-group mb-4">
+                        <label for="branchSelect" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                            <i data-feather="map-pin" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                            اختر فرع مركز الصيانة
+                        </label>
+                        <select id="branchSelect" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors" required>
+                            <option value="october">فرع 6 أكتوبر الرئيسي (المنطقة الصناعية الثالثة - مركز Bosch)</option>
+                            <option value="zayed">فرع الشيخ زايد (المحور المركزي - بجوار هايبر وان)</option>
+                        </select>
+                    </div>
+
+                    <!-- 2. The Direct Complaint Input for Branch -->
+                    <div class="form-group mb-4">
+                        <label for="branchCustomerNotesInput" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                            <i data-feather="edit-3" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                            العربية بتعمل إيه معاك؟ (اكتب المشكلة أو الصيانة المطلوبة بالمركز) ✍️
+                        </label>
+                        <textarea id="branchCustomerNotesInput" rows="3" class="form-control w-full bg-[#0E131F] border border-neutral-700 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-colors" style="color: #FFFFFF !important; background-color: #0E131F !important;" placeholder="مثال: عندي صوت تكتكة في العفشة مع المطبات، وعاوز فحص شامل وضبط زوايا ومراجعة تيل الفرامل..." required></textarea>
+                    </div>
+
+                    <!-- 3. Date & Time Grid (مع تقويم اختيار سريع) -->
+                    <div class="mb-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+                            <div class="form-group">
+                                <label for="branchDateInput" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                                    <i data-feather="calendar" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                                    تاريخ الزيارة المقترح بالمركز
+                                </label>
+                                <input type="date" id="branchDateInput" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors" required onchange="onBranchDateInputChange(this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label for="branchTimeSelect" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                                    <i data-feather="clock" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                                    توقيت الحضور المناسب
+                                </label>
+                                <select id="branchTimeSelect" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors" required>
+                                    <option value="10:00 AM">10:00 صباحاً (الفترة الصباحية)</option>
+                                    <option value="12:00 PM">12:00 ظهراً</option>
+                                    <option value="02:30 PM">02:30 عصراً</option>
+                                    <option value="05:00 PM">05:00 مساءً (فترة الذروة)</option>
+                                    <option value="07:30 PM">07:30 مساءً (الفترة المسائية)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Quick Branch Calendar Day Chips -->
+                        <div class="branch-quick-calendar bg-[#080C14] border border-white/5 rounded-xl p-3">
+                            <div class="text-[11px] text-neutral-400 mb-2 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-feather="calendar" class="w-3 h-3 text-blue-400"></i>
+                                    <span>أو حدد اليوم بضغطة واحدة من التقويم:</span>
+                                </span>
+                                <span class="text-[10px] text-emerald-400">حارة الفحص شاغرة ✓</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5" id="branchCalendarChips">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Vehicle Details -->
+                    <div class="form-group mb-4">
+                        <label for="branchCarInput" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                            <i data-feather="compass" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                            ماركة وموديل وسنة صنع السيارة
+                        </label>
+                        <input type="text" id="branchCarInput" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-blue-500 transition-colors" placeholder="مثال: بي إم دبليو 520i موديل 2021" required>
+                    </div>
+
+                    <!-- 5. Customer Name & Phone -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                        <div class="form-group">
+                            <label for="branchCustName" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                                <i data-feather="user" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                                اسم العميل الكريم
+                            </label>
+                            <input type="text" id="branchCustName" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-blue-500 transition-colors" placeholder="الاسم ثلاثي" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="branchCustPhone" class="block text-xs font-medium text-neutral-300 mb-1.5">
+                                <i data-feather="phone" class="w-3.5 h-3.5 text-blue-400 inline ml-1"></i>
+                                رقم الهاتف للتواصل
+                            </label>
+                            <input type="tel" id="branchCustPhone" class="form-control w-full bg-[#111622] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-blue-500 transition-colors" placeholder="010XXXXXXXX" required>
+                        </div>
+                    </div>
+
+                    <!-- Guarantee / Notice -->
+                    <div class="rounded-xl bg-blue-500/10 border border-blue-500/20 p-3.5 text-xs text-blue-200 mb-6 flex items-start gap-2.5 leading-relaxed">
+                        <i data-feather="shield" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
+                        <span>عند تأكيد الحجز، يتم تخصيص حارة الفحص لاستقبال سيارتك فوراً وفتح أمر صيانة رسمي معتمد من Bosch Car Service بدون أي رسوم إلغاء.</span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-large btn-block text-base font-medium py-3.5 shadow-[0_8px_30px_rgba(30,96,255,0.4)] flex items-center justify-center gap-2 w-full">
+                        <i data-feather="check-circle" class="w-5 h-5"></i>
+                        <span>تأكيد حجز موعد الفرع وتوليد كارت الزيارة 🏢</span>
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>

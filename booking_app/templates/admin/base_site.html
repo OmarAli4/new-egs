@@ -1,21 +1,18 @@
 {% extends "admin/base.html" %}
 {% load static %}
 
-{% block title %}EGS Garage | {{ title }} | لوحة التحكم{% endblock %}
+{% block title %}EGS Garage | {{ title }} | غرفة العمليات والتحكم{% endblock %}
 
 {% block extrahead %}
     {{ block.super }}
-    <!-- Google Fonts: Plus Jakarta Sans & Alexandria -->
+    <!-- Google Fonts: Cairo, Tajawal & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Alexandria:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <!-- Dashboard & Admin Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     
@@ -30,8 +27,12 @@
             --header-color: #FFFFFF;
         }
 
+        body, input, select, textarea, button, th, td, .breadcrumbs {
+            font-family: 'Cairo', 'Tajawal', 'Plus Jakarta Sans', system-ui, sans-serif !important;
+            direction: rtl;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', 'Alexandria', -apple-system, sans-serif !important;
             background-color: #F8FAFC !important;
             color: #0F172A !important;
         }
@@ -47,7 +48,7 @@
         }
 
         #branding h1 {
-            font-family: 'Plus Jakarta Sans', 'Alexandria', sans-serif !important;
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif !important;
             font-weight: 800 !important;
             font-size: 18px !important;
             margin: 0;
@@ -71,7 +72,7 @@
 
         #user-tools a {
             color: #38BDF8 !important;
-            font-weight: 600;
+            font-weight: 700;
             margin: 0 4px;
         }
 
@@ -79,13 +80,14 @@
             background: #FFFFFF !important;
             border-bottom: 1px solid #EEF2F6 !important;
             padding: 10px 24px !important;
-            font-size: 12.5px !important;
+            font-size: 13px !important;
             color: #64748B !important;
+            font-weight: 600;
         }
 
         .breadcrumbs a {
             color: #0F172A !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
         }
 
         /* Modernized Django Admin Tables & Changelists */
@@ -96,16 +98,31 @@
             padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
             margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        #changelist table {
+            width: 100% !important;
+            border-collapse: collapse !important;
         }
 
         #changelist table thead th {
             background: #F8FAFC !important;
             color: #475569 !important;
             font-weight: 800 !important;
-            font-size: 11.5px !important;
-            text-transform: uppercase;
-            border-bottom: 1px solid #E2E8F0 !important;
-            padding: 10px 12px !important;
+            font-size: 12px !important;
+            border-bottom: 2px solid #E2E8F0 !important;
+            padding: 12px 14px !important;
+            white-space: nowrap !important;
+            text-align: right !important;
+        }
+
+        #changelist table tbody td {
+            padding: 12px 14px !important;
+            vertical-align: middle !important;
+            text-align: right !important;
+            font-size: 13px !important;
+            border-bottom: 1px solid #F1F5F9 !important;
         }
 
         #changelist table tbody tr:hover td {
@@ -127,9 +144,24 @@
         }
 
         .button.default, input[type=submit].default {
-            background: #0066FF !important;
+            background: #1E60FF !important;
+        }
+
+        /* Responsive Fix for Sidebar & Content */
+        #content {
+            padding: 20px 24px !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block branding %}
@@ -149,7 +181,7 @@
                 <path d="M31 12 A 14 14 0 0 1 35 26 L 30 24 A 9 9 0 0 0 27 16 Z" fill="#0055FF"/>
             </svg>
             <span style="font-weight: 900; letter-spacing: 0.5px;">EGS GARAGE</span>
-            <span style="font-size: 12px; color: #94A3B8; font-weight: 600; margin-left: 8px;">| Operations Hub</span>
+            <span style="font-size: 12px; color: #94A3B8; font-weight: 700; margin-left: 8px;">| Operations Hub</span>
         </a>
     </h1>
 </div>

@@ -1,3 +1,18 @@
+function addSymptomText(text) {
+    const textarea = document.getElementById('customerNotesInput');
+    if (!textarea) return;
+    const currentVal = textarea.value.trim();
+    if (currentVal.includes(text)) return;
+    if (currentVal) {
+        textarea.value = currentVal + ' + ' + text;
+    } else {
+        textarea.value = text;
+    }
+    updateJobCard();
+    textarea.focus();
+}
+window.addSymptomText = addSymptomText;
+
 /**
  * SERVICE BAY - Complete Interactive Portal & Engine (Dual Desktop & Mobile Perfection)
  */
@@ -7,7 +22,6 @@ let currentAuthRole = 'guest'; // 'guest', 'user', 'admin'
 let loggedInUser = null;
 let userPhone = null;
 let isCarouselHovered = false;
-let marqueeInterval = null;
 
 let bookingData = {
     serviceId: null,
@@ -21,6 +35,7 @@ let bookingData = {
     district: 'October',
     districtText: 'فرع مدينة 6 أكتوبر (المنطقة الصناعية)',
     addressNotes: '',
+    customerNotes: '',
     bookingDate: '',
     bookingTime: '',
     customerName: '',
@@ -31,9 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Run Splash Loader
     runSplashLoader();
 
-    // 2. Set default date to today
-    const todayStr = new Date().toISOString().split('T')[0];
+    // 2. Initialize Bespoke Calendar Engine & Slots
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     bookingData.bookingDate = todayStr;
+    initBookingCalendar();
 
     // 3. Default select first service card
     const firstServiceCard = document.querySelector('.service-card.selected');
@@ -77,35 +94,72 @@ function runSplashLoader() {
         splashLoader.classList.add('fade-out');
         setTimeout(() => {
             splashLoader.style.display = 'none';
+            if (typeof window.runTabletShutterSequence === 'function') {
+                window.runTabletShutterSequence();
+            }
         }, 200);
     }, 150);
 }
 
 /**
- * 2. SAFE NATIVE SCROLL CAROUSEL ENGINE (Works 100% on Laptop & Mobile)
+ * 2. SAFE NATIVE SCROLL CAROUSEL ENGINE (Zero Layout Thrashing, 60-120 FPS RAF)
  */
+let carouselRafId = null;
+let cachedMaxScroll = 0;
+let isCarouselVisible = true;
+
 function initContinuousCarousel() {
     const wrapper = document.getElementById('carouselWrapper');
     if (!wrapper) return;
 
-    wrapper.addEventListener('mouseenter', () => { isCarouselHovered = true; });
-    wrapper.addEventListener('mouseleave', () => { isCarouselHovered = false; });
+    wrapper.addEventListener('mouseenter', () => { isCarouselHovered = true; }, { passive: true });
+    wrapper.addEventListener('mouseleave', () => { isCarouselHovered = false; }, { passive: true });
     wrapper.addEventListener('touchstart', () => { isCarouselHovered = true; }, { passive: true });
     wrapper.addEventListener('touchend', () => { isCarouselHovered = false; }, { passive: true });
 
-    clearInterval(marqueeInterval);
-    marqueeInterval = setInterval(() => {
-        if (isCarouselHovered) return;
-        
-        // Native scroll step
-        wrapper.scrollLeft += 1;
+    // Cache scroll measurements to eliminate Layout Thrashing completely
+    function updateCachedBounds() {
+        cachedMaxScroll = Math.max(0, wrapper.scrollWidth - wrapper.clientWidth);
+    }
+    updateCachedBounds();
+    window.addEventListener('resize', updateCachedBounds, { passive: true });
 
-        // Reset loop when reaching end
-        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-        if (Math.abs(wrapper.scrollLeft) >= maxScroll - 2) {
-            wrapper.scrollLeft = 0;
+    // Pause animation when carousel is off-screen (100% CPU savings during main scroll)
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isCarouselVisible = entry.isIntersecting;
+                if (entry.isIntersecting) updateCachedBounds();
+            });
+        }, { threshold: 0.05 });
+        observer.observe(wrapper);
+    }
+
+    if (carouselRafId) cancelAnimationFrame(carouselRafId);
+    let lastTime = performance.now();
+    const scrollSpeed = 0.045; // Pixels per ms (~45px per second)
+    let accumulator = 0;
+
+    function stepCarousel(currentTime) {
+        const delta = Math.min(currentTime - lastTime, 50);
+        lastTime = currentTime;
+
+        if (!isCarouselHovered && isCarouselVisible && cachedMaxScroll > 10) {
+            accumulator += delta * scrollSpeed;
+            if (accumulator >= 1) {
+                const movePx = Math.floor(accumulator);
+                accumulator -= movePx;
+                wrapper.scrollLeft += movePx;
+
+                if (Math.abs(wrapper.scrollLeft) >= cachedMaxScroll - 2) {
+                    wrapper.scrollLeft = 0;
+                }
+            }
         }
-    }, 28);
+        carouselRafId = requestAnimationFrame(stepCarousel);
+    }
+
+    carouselRafId = requestAnimationFrame(stepCarousel);
 }
 
 /**
@@ -444,12 +498,6 @@ function navigateToStep(stepNum) {
         if (!validateStep(currentStep)) return;
     }
 
-    if (stepNum >= 4 && currentAuthRole === 'guest') {
-        alert('تنبيه سيرفيس باي: يلزم تسجيل الدخول أو إنشاء حساب جديد أولاً لمتابعة اعتماد أمر العمل والحجز');
-        openLoginModal();
-        return;
-    }
-
     currentStep = stepNum;
 
     const fillPercent = ((currentStep - 1) / 3) * 100;
@@ -480,7 +528,18 @@ function navigateToStep(stepNum) {
     }
 
     updateJobCard();
-    window.scrollTo({ top: 120, behavior: 'smooth' });
+    
+    const mobileSec = document.getElementById('mobileServicesSection');
+    if (mobileSec && !mobileSec.classList.contains('hidden')) {
+        const yOffset = -90;
+        const y = mobileSec.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+        const currentPane = document.getElementById(`stepPane-${currentStep}`);
+        if (currentPane) {
+            currentPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
 }
 
 function goToNextStep(fromStep) {
@@ -491,10 +550,19 @@ function goToNextStep(fromStep) {
 
 function validateStep(step) {
     if (step === 1) {
-        if (!bookingData.serviceId) {
-            alert('من فضلك اختر خدمة الصيانة المطلوبة أولاً');
+        const notes = document.getElementById('customerNotesInput');
+        if (!notes || !notes.value.trim()) {
+            alert('من فضلك اكتب لنا العربية بتعمل إيه معاك أو الصيانة المطلوبة أولاً لمتابعة الحجز ✍️');
+            if (notes) notes.focus();
             return false;
         }
+        bookingData.customerNotes = notes.value.trim();
+        const defInput = document.getElementById('defaultServiceId');
+        bookingData.serviceId = defInput ? defInput.value : '7';
+        bookingData.serviceTitle = 'فحص وتشخيص فوري (حسب شكوى العميل)';
+        bookingData.servicePrice = 450.00;
+        bookingData.serviceDuration = 45;
+        updateJobCard();
     } else if (step === 2) {
         const makeSelect = document.getElementById('carMakeSelect');
         const modelSelect = document.getElementById('carModelSelect');
@@ -674,16 +742,240 @@ function populateFallbackModels(makeName, selectElem) {
     });
 }
 
-function selectDateChip(chipElem) {
-    document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('selected'));
-    chipElem.classList.add('selected');
 
-    const dateStr = chipElem.getAttribute('data-date');
+/**
+ * 5. INTERACTIVE LUXURY CALENDAR ENGINE (Bespoke Calendar Module)
+ */
+const ARABIC_MONTHS = [
+    'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+];
+const ARABIC_DAYS_FULL = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+let calCurrentYear = new Date().getFullYear();
+let calCurrentMonth = new Date().getMonth();
+
+function formatLocalDateYMD(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
+function formatArabicDateFull(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const d = parseInt(parts[2], 10);
+    const dt = new Date(y, m, d);
+    const dayName = ARABIC_DAYS_FULL[dt.getDay()];
+    const monthName = ARABIC_MONTHS[m];
+    return `${dayName}، ${d} ${monthName} ${y}`;
+}
+
+function initBookingCalendar() {
+    const today = new Date();
+    calCurrentYear = today.getFullYear();
+    calCurrentMonth = today.getMonth();
+
+    if (!bookingData.bookingDate) {
+        bookingData.bookingDate = formatLocalDateYMD(today);
+    }
+
+    renderCalendar(calCurrentYear, calCurrentMonth);
+    initBranchCalendarQuickChips();
+}
+
+function renderCalendar(year, month) {
+    const grid = document.getElementById('calendarDaysGrid');
+    const monthYearText = document.getElementById('calMonthYearText');
+    const prevBtn = document.getElementById('calPrevMonthBtn');
+    if (!grid) return;
+
+    if (monthYearText) {
+        monthYearText.textContent = `${ARABIC_MONTHS[month]} ${year}`;
+    }
+
+    const today = new Date();
+    const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+
+    if (prevBtn) {
+        const isCurrentOrPastMonth = (year < today.getFullYear()) || 
+                                     (year === today.getFullYear() && month <= today.getMonth());
+        prevBtn.disabled = isCurrentOrPastMonth;
+    }
+
+    grid.innerHTML = '';
+
+    // First day of month offset starting on Saturday (Saturday = 0, Sunday = 1, ..., Friday = 6)
+    const firstDayObj = new Date(year, month, 1);
+    const firstDayIndex = (firstDayObj.getDay() + 1) % 7; 
+
+    const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+    const totalDaysInPrevMonth = new Date(year, month, 0).getDate();
+
+    // 1. Previous month trailing days
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+        const pDay = totalDaysInPrevMonth - i;
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell cal-other-month';
+        cell.innerHTML = `<span class="day-num">${pDay}</span>`;
+        grid.appendChild(cell);
+    }
+
+    // 2. Current month days
+    for (let d = 1; d <= totalDaysInMonth; d++) {
+        const dateObj = new Date(year, month, d);
+        const dateTime = dateObj.getTime();
+        const dateStr = formatLocalDateYMD(dateObj);
+
+        const isPast = dateTime < todayMidnight;
+        const isToday = dateTime === todayMidnight;
+        const isSelected = dateStr === bookingData.bookingDate;
+
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.setAttribute('data-date', dateStr);
+
+        let classes = ['cal-day-cell'];
+        if (isPast) {
+            classes.push('cal-past');
+        } else {
+            classes.push('cal-available');
+            if (isToday) classes.push('cal-today');
+            if (isSelected) classes.push('cal-selected');
+            cell.onclick = () => selectCalendarDate(dateStr);
+        }
+
+        cell.className = classes.join(' ');
+
+        let inner = `<span class="day-num tabular font-mono">${d}</span>`;
+        if (!isPast) {
+            inner += `<span class="cal-dot"></span>`;
+        }
+        cell.innerHTML = inner;
+        grid.appendChild(cell);
+    }
+
+    // 3. Next month leading days
+    const totalCells = firstDayIndex + totalDaysInMonth;
+    const remaining = (7 - (totalCells % 7)) % 7;
+    for (let j = 1; j <= remaining; j++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell cal-other-month';
+        cell.innerHTML = `<span class="day-num">${j}</span>`;
+        grid.appendChild(cell);
+    }
+
+    updateSelectedDateDisplay();
+    if (typeof feather !== 'undefined') feather.replace();
+}
+
+function selectCalendarDate(dateStr) {
     bookingData.bookingDate = dateStr;
     bookingData.bookingTime = '';
 
+    document.querySelectorAll('.cal-day-cell').forEach(c => {
+        if (c.getAttribute('data-date') === dateStr) {
+            c.classList.add('cal-selected');
+        } else {
+            c.classList.remove('cal-selected');
+        }
+    });
+
+    updateSelectedDateDisplay();
     loadSlots(dateStr);
+
+    const slotNotice = document.getElementById('selectedSlotNotice');
+    if (slotNotice) {
+        slotNotice.textContent = 'اختر توقيت وصول سيارة الصيانة المفضل من القائمة أعلاه ⏱️';
+        slotNotice.className = 'text-blue-400 font-light';
+    }
+
     updateJobCard();
+}
+
+function changeCalendarMonth(delta) {
+    calCurrentMonth += delta;
+    if (calCurrentMonth > 11) {
+        calCurrentMonth = 0;
+        calCurrentYear++;
+    } else if (calCurrentMonth < 0) {
+        calCurrentMonth = 11;
+        calCurrentYear--;
+    }
+    renderCalendar(calCurrentYear, calCurrentMonth);
+}
+
+function goToTodayCalendar() {
+    const today = new Date();
+    calCurrentYear = today.getFullYear();
+    calCurrentMonth = today.getMonth();
+    const todayStr = formatLocalDateYMD(today);
+    selectCalendarDate(todayStr);
+    renderCalendar(calCurrentYear, calCurrentMonth);
+}
+
+function updateSelectedDateDisplay() {
+    const textElem = document.getElementById('selectedDateText');
+    if (textElem) {
+        textElem.textContent = formatArabicDateFull(bookingData.bookingDate);
+    }
+}
+
+function initBranchCalendarQuickChips() {
+    const container = document.getElementById('branchCalendarChips');
+    const branchInput = document.getElementById('branchDateInput');
+    if (!container) return;
+
+    const today = new Date();
+    const todayStr = formatLocalDateYMD(today);
+    if (branchInput) {
+        branchInput.min = todayStr;
+        if (!branchInput.value) branchInput.value = todayStr;
+    }
+
+    container.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+        const dt = new Date(today);
+        dt.setDate(today.getDate() + i);
+        const dtStr = formatLocalDateYMD(dt);
+        const dayName = i === 0 ? 'اليوم' : (i === 1 ? 'غداً' : ARABIC_DAYS_FULL[dt.getDay()]);
+        const dayNum = `${dt.getDate()}/${dt.getMonth() + 1}`;
+
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = `text-xs py-1.5 px-3 rounded-lg border transition-all duration-200 flex items-center gap-1.5 ${i === 0 ? 'bg-blue-600 text-white border-blue-400 font-medium' : 'bg-white/5 text-neutral-300 border-white/10 hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/40'}`;
+        chip.innerHTML = `<span>${dayName}</span><span class="text-[10px] opacity-75 tabular">(${dayNum})</span>`;
+        chip.onclick = () => {
+            container.querySelectorAll('button').forEach(b => {
+                b.className = 'text-xs py-1.5 px-3 rounded-lg border transition-all duration-200 flex items-center gap-1.5 bg-white/5 text-neutral-300 border-white/10 hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/40';
+            });
+            chip.className = 'text-xs py-1.5 px-3 rounded-lg border transition-all duration-200 flex items-center gap-1.5 bg-blue-600 text-white border-blue-400 font-medium';
+            if (branchInput) branchInput.value = dtStr;
+        };
+        container.appendChild(chip);
+    }
+}
+
+function onBranchDateInputChange(val) {
+    const container = document.getElementById('branchCalendarChips');
+    if (!container) return;
+    container.querySelectorAll('button').forEach(b => {
+        b.className = 'text-xs py-1.5 px-3 rounded-lg border transition-all duration-200 flex items-center gap-1.5 bg-white/5 text-neutral-300 border-white/10 hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/40';
+    });
+}
+
+window.initBookingCalendar = initBookingCalendar;
+window.selectCalendarDate = selectCalendarDate;
+window.changeCalendarMonth = changeCalendarMonth;
+window.goToTodayCalendar = goToTodayCalendar;
+window.onBranchDateInputChange = onBranchDateInputChange;
+
+function selectDateChip(chipElem) {
+    selectCalendarDate(chipElem.getAttribute('data-date'));
 }
 
 function loadSlots(dateStr) {
@@ -761,6 +1053,13 @@ function selectSlot(pillElem, timeLabel) {
     pillElem.classList.add('selected');
 
     bookingData.bookingTime = timeLabel;
+
+    const slotNotice = document.getElementById('selectedSlotNotice');
+    if (slotNotice) {
+        slotNotice.innerHTML = `الموعد المحدد: <strong class="text-white">${formatArabicDateFull(bookingData.bookingDate)} — الساعة ${timeLabel}</strong> ✓`;
+        slotNotice.className = 'text-emerald-400 text-xs font-medium flex items-center gap-1.5';
+    }
+
     updateJobCard();
 }
 
@@ -774,6 +1073,7 @@ function updateJobCard() {
     const plateInput = document.getElementById('carPlateInput');
     const districtSelect = document.getElementById('districtSelect');
     const addressInput = document.getElementById('addressNotesInput');
+    const customerNotesInput = document.getElementById('customerNotesInput');
     const custNameInput = document.getElementById('custNameInput');
     const custPhoneInput = document.getElementById('custPhoneInput');
 
@@ -787,6 +1087,7 @@ function updateJobCard() {
         bookingData.districtText = districtSelect.options[districtSelect.selectedIndex].text;
     }
     if (addressInput) bookingData.addressNotes = addressInput.value.trim();
+    if (customerNotesInput) bookingData.customerNotes = customerNotesInput.value.trim();
 
     if (custNameInput) bookingData.customerName = custNameInput.value.trim();
     if (custPhoneInput) bookingData.customerPhone = custPhoneInput.value.trim();
@@ -858,7 +1159,7 @@ function updateJobCard() {
         if (cardCustomerPhone) cardCustomerPhone.textContent = '---';
     }
 
-    updateChecklistRow('chkStep-1', !!bookingData.serviceId);
+    updateChecklistRow('chkStep-1', !!(bookingData.customerNotes && bookingData.customerNotes.trim()));
     updateChecklistRow('chkStep-2', !!(bookingData.carMake && bookingData.carModel));
     updateChecklistRow('chkStep-3', !!(bookingData.bookingDate && bookingData.bookingTime));
     updateChecklistRow('chkStep-4', currentAuthRole !== 'guest');
@@ -881,23 +1182,25 @@ function updateChecklistRow(rowId, isComplete) {
  * 7. SUBMIT BOOKING
  */
 function submitBooking() {
-    if (currentAuthRole === 'guest') {
-        alert('تنبيه سيرفيس باي: يلزم تسجيل الدخول أولاً أو إنشاء حساب جديد لتأكيد وتثبيت الحجز');
-        openLoginModal();
-        return;
-    }
-
     const nameInput = document.getElementById('custNameInput');
     const phoneInput = document.getElementById('custPhoneInput');
 
-    const customerName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : loggedInUser;
-    const customerPhone = (phoneInput && phoneInput.value.trim()) ? phoneInput.value.trim() : userPhone;
+    let customerName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : (loggedInUser && loggedInUser !== 'زائر' ? loggedInUser : '');
+    let customerPhone = (phoneInput && phoneInput.value.trim()) ? phoneInput.value.trim() : (userPhone && userPhone !== '010XXXXXXXX' ? userPhone : '');
+
+    if (!customerName || !customerPhone || customerPhone === '010XXXXXXXX') {
+        alert('يرجى إدخال الاسم الكريم ورقم المحمول لتأكيد الحجز واستلام كارت العمل الرقمي 📞');
+        if (nameInput && !nameInput.value.trim()) nameInput.focus();
+        else if (phoneInput) phoneInput.focus();
+        return;
+    }
 
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]') ? 
                       document.querySelector('[name=csrfmiddlewaretoken]').value : '';
 
     const payload = {
         service_id: bookingData.serviceId,
+        customer_notes: bookingData.customerNotes,
         car_make: bookingData.carMake,
         car_model: bookingData.carModel,
         car_year: bookingData.carYear,
@@ -936,6 +1239,8 @@ function submitBooking() {
             duration_mins: bookingData.serviceDuration,
             car_info: `${bookingData.carMake} ${bookingData.carModel} (${bookingData.carYear})`,
             district_display: bookingData.districtText,
+            address_notes: bookingData.addressNotes,
+            customer_notes: bookingData.customerNotes,
             booking_date: bookingData.bookingDate,
             booking_time: bookingData.bookingTime,
             total_price: bookingData.servicePrice,
@@ -974,6 +1279,7 @@ function showModalReceipt(jobCard) {
         detailsBox.innerHTML = `
             <div><strong>اسم العميل:</strong> ${jobCard.customer_name} (${jobCard.customer_phone})</div>
             <div><strong>خدمة الصيانة:</strong> ${jobCard.service_title} (${jobCard.duration_mins} دقيقة)</div>
+            ${jobCard.customer_notes ? `<div style="margin: 6px 0; padding: 8px 12px; background: rgba(30, 96, 255, 0.12); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3);"><strong>طلب العميل والملاحظات:</strong> <span style="color: #60A5FA; font-weight: 500;">${jobCard.customer_notes}</span></div>` : ''}
             <div><strong>بيانات السيارة:</strong> ${jobCard.car_info}</div>
             <div><strong>منطقة وموقع الصيانة:</strong> ${jobCard.district_display} ${jobCard.address_notes ? `(${jobCard.address_notes})` : ''}</div>
             <div><strong>موعد وصول سيارة الصيانة:</strong> ${jobCard.booking_date} الساعة ${jobCard.booking_time}</div>
@@ -990,16 +1296,9 @@ function showModalReceipt(jobCard) {
 📞 *رقم الهاتف:* ${jobCard.customer_phone}
 🚘 *السيارة:* ${jobCard.car_info}
 🔧 *الخدمة المطلوبة:* ${jobCard.service_title}
-📍 *الموقع والعنوان:* ${jobCard.district_display} - ${jobCard.address_notes || 'موقع العميل'}
+${jobCard.customer_notes ? `📝 *تفاصيل طلبك:* ${jobCard.customer_notes}\n` : ''}📍 *الموقع والعنوان:* ${jobCard.district_display} - ${jobCard.address_notes || 'موقع العميل'}
 📅 *موعد وصول الفني:* ${jobCard.booking_date} الساعة ${jobCard.booking_time}
 💰 *إجمالي التكلفة:* ${jobCard.total_price} ج.م
-
-━━━━━━━━━━━━━━━━━━━
-💳 *بيانات الدفع والتحويل عبر إنستاباي (InstaPay):*
-🔹 *معرف إنستاباي (IPA):* egs.garage@instapay
-🔹 *رقم الهاتف للتحويل:* 01019900990
-🔹 *اسم الحساب:* Elite Garage Service Center
-📌 *مرفق لحضرتكم إيصال التحويل لتأكيد الحجز وبدء تحرك سيارة الصيانة فوراً.*
 ━━━━━━━━━━━━━━━━━━━
 مركز EGS لخدمات الصيانة المتنقلة الفورية 🚚`;
 
@@ -1020,3 +1319,183 @@ function closeModal() {
     if (modal) modal.classList.remove('active');
     window.location.reload();
 }
+
+/**
+ * 10. PRIMARY SERVICE CHANNEL MODE SELECTOR (Center vs Mobile Van)
+ */
+let currentServiceChannel = null;
+
+function selectServiceChannel(mode, event) {
+    if (event) event.preventDefault();
+    currentServiceChannel = mode;
+
+    const branchSection = document.getElementById('branchServicesSection');
+    const mobileSection = document.getElementById('mobileServicesSection');
+    const cardBranch = document.getElementById('cardBranchMode');
+    const cardMobile = document.getElementById('cardMobileMode');
+    const prompt = document.getElementById('serviceChoicePrompt');
+
+    if (prompt) {
+        prompt.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => { prompt.style.display = 'none'; }, 400);
+    }
+
+    if (mode === 'branch') {
+        // Show Branch Section, Hide Mobile Section
+        if (branchSection) branchSection.classList.remove('hidden');
+        if (mobileSection) mobileSection.classList.add('hidden');
+
+        // Style Cards
+        if (cardBranch) {
+            cardBranch.classList.add('border-blue-500', 'bg-[#001733]/90', 'shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(30,96,255,0.3)]');
+            cardBranch.classList.remove('border-white/10', 'bg-[#080808]/90');
+        }
+        if (cardMobile) {
+            cardMobile.classList.remove('border-blue-500', 'bg-[#001733]/90', 'shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(30,96,255,0.3)]');
+            cardMobile.classList.add('border-white/10', 'bg-[#080808]/90');
+        }
+
+        // Set Default Date if not set
+        const dateInput = document.getElementById('branchDateInput');
+        if (dateInput && !dateInput.value) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+        }
+
+        // Update header active buttons
+        const hMobile = document.getElementById('headerBtnMobile');
+        const hBranch = document.getElementById('headerBtnBranch');
+        if (hMobile) hMobile.classList.remove('active');
+        if (hBranch) hBranch.classList.add('active');
+
+        // Smooth scroll to branch section
+        scrollChannelTarget(branchSection);
+
+    } else if (mode === 'mobile') {
+        // Show Mobile Section, Hide Branch Section
+        if (mobileSection) mobileSection.classList.remove('hidden');
+        if (branchSection) branchSection.classList.add('hidden');
+
+        // Style Cards
+        if (cardMobile) {
+            cardMobile.classList.add('border-blue-500', 'bg-[#001733]/90', 'shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(30,96,255,0.3)]');
+            cardMobile.classList.remove('border-white/10', 'bg-[#080808]/90');
+        }
+        if (cardBranch) {
+            cardBranch.classList.remove('border-blue-500', 'bg-[#001733]/90', 'shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(30,96,255,0.3)]');
+            cardBranch.classList.add('border-white/10', 'bg-[#080808]/90');
+        }
+
+        // Restart continuous carousel if needed
+        if (typeof initContinuousCarousel === 'function') {
+            initContinuousCarousel();
+        }
+
+        // Update header active buttons
+        const hMobile = document.getElementById('headerBtnMobile');
+        const hBranch = document.getElementById('headerBtnBranch');
+        if (hMobile) hMobile.classList.add('active');
+        if (hBranch) hBranch.classList.remove('active');
+
+        // Smooth scroll to mobile section
+        scrollChannelTarget(mobileSection);
+    }
+
+    // Refresh Lenis physics & GSAP ScrollTrigger
+    if (window.lenis && typeof window.lenis.resize === 'function') {
+        window.lenis.resize();
+    }
+    if (typeof ScrollTrigger !== 'undefined' && typeof ScrollTrigger.refresh === 'function') {
+        ScrollTrigger.refresh();
+    }
+
+    // Replace Feather icons in freshly revealed DOM
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+}
+
+function scrollChannelTarget(targetElem) {
+    if (!targetElem) return;
+    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 96;
+    if (window.lenis) {
+        window.lenis.scrollTo(targetElem, {
+            offset: -(headerH + 20),
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+    } else {
+        targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function selectMobileServiceMode(event) {
+    selectServiceChannel('mobile', event);
+}
+
+function openBranchBookingModal() {
+    selectServiceChannel('branch');
+}
+
+function closeBranchBookingModal() {
+    const modal = document.getElementById('branchBookingModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function handleBranchBookingSubmit(event) {
+    if (event) event.preventDefault();
+    const branch = document.getElementById('branchSelect').value;
+    const branchName = branch === 'october' ? 'فرع 6 أكتوبر الرئيسي (المنطقة الصناعية - مركز Bosch)' : 'فرع الشيخ زايد (المحور المركزي)';
+    const serviceTypeElem = document.getElementById('branchServiceTypeSelect');
+    const serviceType = serviceTypeElem ? serviceTypeElem.value : 'فحص وصيانة عامة بالمركز';
+    const date = document.getElementById('branchDateInput').value;
+    const time = document.getElementById('branchTimeSelect').value;
+    const car = document.getElementById('branchCarInput').value;
+    const name = document.getElementById('branchCustName').value;
+    const phone = document.getElementById('branchCustPhone').value;
+    const notesElem = document.getElementById('branchCustomerNotesInput');
+    const customerNotes = notesElem ? notesElem.value.trim() : '';
+
+    closeBranchBookingModal();
+
+    const ticketCode = 'EGS-BRANCH-' + Math.floor(1000 + Math.random() * 9000);
+    const modal = document.getElementById('bookingModal');
+    const ticketCodeElem = document.getElementById('modalTicketCode');
+    const receiptDetails = document.getElementById('modalReceiptDetails');
+    const whatsappBtn = document.getElementById('modalWhatsappBtn');
+
+    if (ticketCodeElem) ticketCodeElem.textContent = ticketCode;
+    if (receiptDetails) {
+        receiptDetails.innerHTML = `
+            <div style="margin-bottom: 8px;"><strong>قناة الخدمة:</strong> <span style="color: #3B82F6;">🏢 زيارة مركز الصيانة المعتمد</span></div>
+            <div style="margin-bottom: 8px;"><strong>الفرع المحجوز:</strong> ${branchName}</div>
+            <div style="margin-bottom: 8px;"><strong>نوع الصيانة:</strong> <span style="color: #F59E0B;">${serviceType}</span></div>
+            ${customerNotes ? `<div style="margin-bottom: 8px; padding: 8px 12px; background: rgba(30, 96, 255, 0.12); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3);"><strong>طلبك وتفاصيل العطل:</strong> <span style="color: #60A5FA; font-weight: 500;">${customerNotes}</span></div>` : ''}
+            <div style="margin-bottom: 8px;"><strong>العميل:</strong> ${name} (${phone})</div>
+            <div style="margin-bottom: 8px;"><strong>السيارة:</strong> ${car}</div>
+            <div style="margin-bottom: 8px;"><strong>تاريخ وموعد الحضور:</strong> ${date} الساعة ${time}</div>
+            <div><strong>حالة الحجز:</strong> <span style="color: #10B981; font-weight: bold;">تم تأكيد حجز حارة الفحص في الفرع 🟢</span></div>
+        `;
+    }
+
+    const waText = 
+`🏢 *طلب حجز موعد بمركز الصيانة - EGS Elite Garage*
+━━━━━━━━━━━━━━━━━━━
+📋 *رقم حجز الموعد:* ${ticketCode}
+📍 *الفرع:* ${branchName}
+🔧 *نوع الصيانة:* ${serviceType}
+${customerNotes ? `📝 *تفاصيل طلبك:* ${customerNotes}\n` : ''}👤 *اسم العميل:* ${name}
+📞 *الهاتف:* ${phone}
+🚘 *السيارة:* ${car}
+📅 *الموعد:* ${date} الساعة ${time}
+━━━━━━━━━━━━━━━━━━━
+مركز EGS لصيانة السيارات المعتمد 🏢`;
+
+    const egsWhatsappNumber = '201019900990';
+    if (whatsappBtn) {
+        whatsappBtn.href = `https://api.whatsapp.com/send?phone=${egsWhatsappNumber}&text=${encodeURIComponent(waText)}`;
+    }
+
+    if (modal) modal.classList.add('active');
+    if (typeof feather !== 'undefined') feather.replace();
+}
+

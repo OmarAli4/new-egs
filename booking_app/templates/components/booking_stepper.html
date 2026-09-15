@@ -1,0 +1,400 @@
+<!-- Main Booking Stepper Column -->
+        <div class="content-wrapper">
+            <div class="booking-column">
+
+                <!-- GUEST & USER BOOKING NOTICE -->
+                <div class="account-notice-banner" id="authNoticeBanner">
+                    <div class="notice-icon"><i data-feather="check-circle"></i></div>
+                    <div class="notice-text">
+                        <strong>حجز سريع ومباشر (Guest Booking):</strong> يمكنك إكمال وتأكيد الحجز فوراً كزائر دون الحاجة لتسجيل الدخول، أو الدخول لحفظ سجل صياناتك.
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="openLoginModal(); event.preventDefault();">
+                        تسجيل الدخول / حساب جديد
+                    </button>
+                </div>
+
+                <!-- Step Progress Tracker -->
+                <div class="stepper-bar">
+                    <div class="stepper-track">
+                        <div class="stepper-fill" id="stepperFill"></div>
+                    </div>
+                    <div class="steps-grid">
+                        <div class="step-item active" id="stepIndicator-1" onclick="navigateToStep(1)">
+                            <div class="step-node">1</div>
+                            <span class="step-label">وصف المشكلة ✍️</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-2" onclick="navigateToStep(2)">
+                            <div class="step-node">2</div>
+                            <span class="step-label">السيارة</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-3" onclick="navigateToStep(3)">
+                            <div class="step-node">3</div>
+                            <span class="step-label">الموقع والموعد 📍</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-4" onclick="navigateToStep(4)">
+                            <div class="step-node">4</div>
+                            <span class="step-label">تأكيد الحجز</span>
+                        </div>
+                    </div>
+                </div>
+
+                                <!-- STEP 1: DESCRIBE THE PROBLEM (العربية بتعمل إيه معاك؟) -->
+                <section class="step-pane active" id="stepPane-1">
+                    <div class="pane-header">
+                        <h2>1. العربية بتعمل إيه معاك؟ 🚗</h2>
+                        <p>صف لنا المشكلة أو الأصوات أو الصيانة التي تحتاجها بلغتك وطريقتك، وسيقوم مهندس وفني EGS بتجهيز المعدات اللازمة والوصول إليك فوراً.</p>
+                    </div>
+
+                    <!-- THE PRIMARY PROBLEM DESCRIPTION CARD (No Cards / Direct Complaint) -->
+                    <div class="problem-card p-6 md:p-8 bg-[#0B0F17] border border-neutral-800 rounded-2xl shadow-xl mb-8">
+                        <div class="flex items-center justify-between gap-3 mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                                    <i data-feather="edit-3" class="w-5 h-5 text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-display font-medium text-white">اكتب المشكلة أو طلبك بالتفصيل ✍️</h3>
+                                    <p class="text-xs text-neutral-400 font-light">صف أي عطل أو صوت غريب حاسس بيه في العربية</p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 py-1.5 px-3 rounded-full hidden sm:inline-flex">
+                                فحص وتشخيص فوري معتمد
+                            </span>
+                        </div>
+
+                        <!-- Big Comfortable Textarea with Explicit White Text -->
+                        <textarea id="customerNotesInput" rows="4" class="form-control w-full bg-[#060912] border border-neutral-700 rounded-xl p-4 text-sm md:text-base text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-colors leading-relaxed mb-4" style="color: #FFFFFF !important; background-color: #060912 !important;" placeholder="مثال: عندي صوت تزييق مع الفرامل، والعربية بتسخن شوية في الزحمة، ومحتاج أغير زيت وفلتر وأعمل فحص كمبيوتر كامل..." required oninput="updateJobCard()"></textarea>
+
+                        <!-- Quick Common Complaint Chips (إضافة سريعة بضغطة واحدة) -->
+                        <div class="quick-chips-wrapper">
+                            <div class="text-xs text-neutral-400 mb-2 flex items-center gap-1.5">
+                                <i data-feather="zap" class="w-3.5 h-3.5 text-blue-400"></i>
+                                <span>أو اختر من المشاكل والأعطال الشائعة لإضافتها بضغطة واحدة:</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2" id="symptomChips">
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('صوت صفارة / تزييق مع الفرامل')">
+                                    + صوت صفارة مع الفرامل
+                                </button>
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('تغيير زيت تخليقي وفلاتر أصلية')">
+                                    + تغيير زيت وفلاتر
+                                </button>
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('كشف كمبيوتر وتشخيص لمبة Check Engine')">
+                                    + كشف كمبيوتر ولمبة Check Engine
+                                </button>
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('ضعف تبريد التكييف وخروج هواء دافئ')">
+                                    + ضعف تبريد التكييف
+                                </button>
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('رجة أو اهتزاز في الدريكسيون والعفشة')">
+                                    + رجة في الدريكسيون والعفشة
+                                </button>
+                                <button type="button" class="symptom-chip text-xs bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-neutral-300 hover:text-blue-300 py-1.5 px-3.5 rounded-full transition-all duration-200" onclick="addSymptomText('السيارة لا تدور / شحن أو تغيير بطارية')">
+                                    + العربية مش بتدور / بطارية
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="defaultServiceId" value="{{ services.0.id|default:'7' }}">
+
+                    <div class="step-actions">
+                        <div></div>
+                        <button type="button" class="btn btn-primary btn-large" onclick="goToNextStep(1); event.preventDefault();">
+                            <span>المتابعة لبيانات السيارة</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 2: CAR DETAILS -->
+                <section class="step-pane" id="stepPane-2">
+                    <div class="pane-header">
+                        <h2>2. أدخل بيانات سيارتك</h2>
+                        <p>نستخدم هذه البيانات لتجهيز الفلاتر والمواد الأصلية المناسبة لمواصفات مصنع سيارتك.</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="carMakeSelect"><i data-feather="award"></i> ماركة السيارة</label>
+                                <select id="carMakeSelect" class="form-control" onchange="onMakeChange(this.value)">
+                                    <option value="">-- اختر ماركة السيارة --</option>
+                                    {% for make in car_makes %}
+                                    <option value="{{ make.name }}" data-id="{{ make.id }}">{{ make.name }}</option>
+                                    {% empty %}
+                                    <option value="تويوتا Toyota">تويوتا Toyota</option>
+                                    <option value="هيوانداي Hyundai">هيوانداي Hyundai</option>
+                                    <option value="كيا Kia">كيا Kia</option>
+                                    <option value="بي إم دبليو BMW">بي إم دبليو BMW</option>
+                                    <option value="مرسيدس Mercedes-Benz">مرسيدس Mercedes-Benz</option>
+                                    <option value="نيسان Nissan">نيسان Nissan</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carModelSelect"><i data-feather="grid"></i> موديل السيارة</label>
+                                <select id="carModelSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="">-- اختر موديل السيارة --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="carYearSelect"><i data-feather="calendar"></i> سنة الصنع</label>
+                                <select id="carYearSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023" selected>2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2015">2015 وأقدم</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carPlateInput"><i data-feather="hash"></i> رقم اللوحة (اختياري)</label>
+                                <input type="text" id="carPlateInput" class="form-control" placeholder="مثال: أ ب ج 1234" oninput="updateJobCard()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn btn-secondary" onclick="navigateToStep(1); event.preventDefault();">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextStep(2); event.preventDefault();">
+                            <span>المتابعة لااختيار الموعد</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 3: LOCATION & SLOTS -->
+                <section class="step-pane" id="stepPane-3">
+                    <div class="pane-header">
+                        <h2>3. حدد موقع تواجد السيارة وموعد وصول الفني 📍</h2>
+                        <p>تصلك سيارة الصيانة المتنقلة المجهزة إلى عنوانك في الموعد المحدد بناءً على توفر عربات الخدمة بمنطقتك.</p>
+                    </div>
+
+                    <div class="location-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="districtSelect"><i data-feather="map"></i> المنطقة / المدينة</label>
+                                <select id="districtSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="October" selected>مدينة 6 أكتوبر (جميع الأحياء)</option>
+                                    <option value="Zayed">الشيخ زايد (جميع الأحياء والكومباوندات)</option>
+                                    <option value="Haram_Gardens">حدائق الأهرام</option>
+                                    <option value="October_Gardens">حدائق أكتوبر</option>
+                                    <option value="New_Cairo">التجمع والقاهرة الجديدة</option>
+                                    <option value="Maadi">المعادي</option>
+                                    <option value="Other">منطقة أخرى (يرجى توضيحها بالعنوان)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="addressNotesInput"><i data-feather="map-pin"></i> العنوان بالتفصيل</label>
+                                <input type="text" id="addressNotesInput" class="form-control" placeholder="الشارع / رقم العمارة أو الفيلا / اسم الكومباوند أو علامة مميزة" required oninput="updateJobCard()">
+                            </div>
+                        </div>
+
+                        <!-- GPS Location Button Row -->
+                        <div class="gps-action-row">
+                            <button type="button" class="btn-gps-locate" id="gpsBtn" onclick="detectGPSLocation()">
+                                <i data-feather="crosshair"></i>
+                                <span id="gpsBtnText">تحديد موقعي الحالي تلقائياً بالـ GPS 📍</span>
+                            </button>
+                            <span class="gps-hint" id="gpsHint">اضغط لجلب إحداثيات موقعك الجغرافي لتصلك سيارة الصيانة فوراً ودون عناء الوصف.</span>
+                        </div>
+                    </div>
+
+                                        <!-- APPOINTMENT BOOKING CALENDAR SUITE (تقويم حجز المواعيد التفاعلي الفخم) -->
+                    <div class="booking-calendar-suite mb-8 bg-[#0B0F17] border border-neutral-800 rounded-2xl p-5 md:p-7 shadow-2xl">
+                        
+                        <!-- Suite Header -->
+                        <div class="suite-header flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                                    <i data-feather="calendar" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-display font-medium text-white">تقويم حجز المواعيد 📅</h3>
+                                    <p class="text-xs text-neutral-400 font-light">اختر اليوم المناسب لوصول سيارة ومهندس الصيانة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" class="text-xs py-1.5 px-3 rounded-lg bg-white/5 hover:bg-blue-600/20 text-neutral-300 hover:text-blue-300 border border-white/10 transition-colors flex items-center gap-1.5" onclick="goToTodayCalendar()">
+                                    <i data-feather="rotate-ccw" class="w-3 h-3"></i>
+                                    <span>اليوم</span>
+                                </button>
+                                <div class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-1 px-3 rounded-full flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>مواعيد متاحة للحجز</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2-Column Responsive Layout: Calendar (7 cols) + Available Slots (5 cols) -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                            
+                            <!-- 1. Interactive Monthly Calendar Widget -->
+                            <div class="lg:col-span-7 calendar-widget-box bg-[#060912] border border-neutral-800/80 rounded-xl p-4 sm:p-5 shadow-inner">
+                                
+                                <!-- Month Navigation Header -->
+                                <div class="calendar-nav-bar flex items-center justify-between gap-2 mb-4 pb-3 border-b border-white/5">
+                                    <button type="button" class="cal-nav-btn p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-colors flex items-center gap-1 text-xs" id="calPrevMonthBtn" onclick="changeCalendarMonth(-1)" title="الشهر السابق">
+                                        <i data-feather="chevron-right" class="w-4 h-4 text-neutral-300"></i>
+                                        <span class="hidden sm:inline">السابق</span>
+                                    </button>
+
+                                    <div class="cal-month-title flex items-center gap-2">
+                                        <i data-feather="calendar" class="w-4 h-4 text-blue-400"></i>
+                                        <span id="calMonthYearText" class="text-sm sm:text-base font-display font-medium text-white tracking-wide">
+                                            سبتمبر 2026
+                                        </span>
+                                    </div>
+
+                                    <button type="button" class="cal-nav-btn p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-colors flex items-center gap-1 text-xs" id="calNextMonthBtn" onclick="changeCalendarMonth(1)" title="الشهر القادم">
+                                        <span class="hidden sm:inline">التالي</span>
+                                        <i data-feather="chevron-left" class="w-4 h-4 text-neutral-300"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Weekday Headers (Saturday to Friday in Arabic) -->
+                                <div class="calendar-weekdays-grid grid grid-cols-7 text-center mb-2 gap-1 select-none">
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">السبت</div>
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">الأحد</div>
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">الإثنين</div>
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">الثلاثاء</div>
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">الأربعاء</div>
+                                    <div class="text-[11px] font-medium text-neutral-400 py-1">الخميس</div>
+                                    <div class="text-[11px] font-medium text-blue-400 py-1">الجمعة</div>
+                                </div>
+
+                                <!-- Dynamic Calendar Days Grid -->
+                                <div class="calendar-days-grid grid grid-cols-7 gap-1.5 text-center" id="calendarDaysGrid">
+                                    <!-- Injected dynamically via JS renderCalendar() -->
+                                </div>
+
+                                <!-- Calendar Footer Legend -->
+                                <div class="calendar-legend flex flex-wrap items-center justify-between gap-2 mt-4 pt-3 border-t border-white/5 text-[10px] text-neutral-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                                        <span>اليوم المحدد</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full border border-blue-500/60 inline-block"></span>
+                                        <span>اليوم الحالي</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
+                                        <span>مواعيد شاغرة</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. Connected Time Slots Panel -->
+                            <div class="lg:col-span-5 slots-panel bg-[#060912] border border-neutral-800/80 rounded-xl p-4 sm:p-5 shadow-inner">
+                                <div class="slots-panel-header mb-4 pb-3 border-b border-white/10">
+                                    <div class="text-[11px] text-neutral-400 mb-1">المواعيد المتاحة ليوم:</div>
+                                    <div class="text-sm font-display font-medium text-blue-400 flex items-center gap-2" id="selectedDateDisplay">
+                                        <i data-feather="clock" class="w-4 h-4 shrink-0"></i>
+                                        <span id="selectedDateText" class="truncate">الخميس، 10 سبتمبر 2026</span>
+                                    </div>
+                                </div>
+
+                                <!-- Slots Groups -->
+                                <div class="slots-container space-y-3.5" id="slotsWrapper">
+                                    <div class="slot-group border border-neutral-800/70 rounded-xl p-3 bg-white/[0.02]">
+                                        <div class="group-header flex items-center gap-2 text-xs font-light text-neutral-300 mb-2 pb-1.5 border-b border-white/5">
+                                            <i data-feather="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+                                            <span>فترة الصباح (09:00 ص - 12:00 ظ)</span>
+                                        </div>
+                                        <div class="slots-grid grid grid-cols-2 gap-2" id="morningSlots"></div>
+                                    </div>
+
+                                    <div class="slot-group border border-neutral-800/70 rounded-xl p-3 bg-white/[0.02]">
+                                        <div class="group-header flex items-center gap-2 text-xs font-light text-neutral-300 mb-2 pb-1.5 border-b border-white/5">
+                                            <i data-feather="cloud-sun" class="w-3.5 h-3.5 text-blue-400"></i>
+                                            <span>فترة الظهيرة (12:00 ظ - 04:00 ع)</span>
+                                        </div>
+                                        <div class="slots-grid grid grid-cols-2 gap-2" id="afternoonSlots"></div>
+                                    </div>
+
+                                    <div class="slot-group border border-neutral-800/70 rounded-xl p-3 bg-white/[0.02]">
+                                        <div class="group-header flex items-center gap-2 text-xs font-light text-neutral-300 mb-2 pb-1.5 border-b border-white/5">
+                                            <i data-feather="moon" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                            <span>فترة المساء (04:00 ع - 08:00 م)</span>
+                                        </div>
+                                        <div class="slots-grid grid grid-cols-2 gap-2" id="eveningSlots"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Selected Slot Status Indicator -->
+                                <div class="selected-slot-alert mt-4 pt-3 border-t border-white/10 text-xs text-neutral-300 flex items-center gap-2">
+                                    <i data-feather="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                                    <span id="selectedSlotNotice" class="text-neutral-300">حدد توقيت وصول سيارة الصيانة</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn btn-secondary" onclick="navigateToStep(2); event.preventDefault();">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextStep(3); event.preventDefault();">
+                            <span>تأكيد البيانات النهائية</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 4: CONFIRMATION -->
+                <section class="step-pane" id="stepPane-4">
+                    <div class="pane-header">
+                        <h2>4. بيانات التواصل وتأكيد الحجز</h2>
+                        <p>أدخل اسمك ورقم المحمول لتأكيد الموعد واستلام إيصال كارت العمل الرقمي ورسالة الواتساب.</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custNameInput"><i data-feather="user"></i> الاسم بالكامل</label>
+                                <input type="text" id="custNameInput" class="form-control" placeholder="أدخل اسمك الكريم بالكامل" required oninput="updateJobCard()">
+                            </div>
+                            <div class="form-group">
+                                <label for="custPhoneInput"><i data-feather="phone"></i> رقم المحمول</label>
+                                <input type="tel" id="custPhoneInput" class="form-control" placeholder="010XXXXXXXX" required oninput="updateJobCard()">
+                            </div>
+                        </div>
+
+                        <div class="terms-box">
+                            <div class="terms-icon"><i data-feather="truck"></i></div>
+                            <div class="terms-text">
+                                <strong>تنويه خدمة الصيانة المتنقلة EGS:</strong> تصلك سيارة الصيانة المجهزة في الموعد والموقع المحددين، ويتم تنفيذ كافة الأعمال أمامك مع تسليم كارت العمل وضمان معتمد على جميع قطع الغيار.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn btn-secondary" onclick="navigateToStep(3); event.preventDefault();">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button type="button" class="btn btn-go btn-large" onclick="submitBooking(); event.preventDefault();">
+                            <i data-feather="check-circle"></i>
+                            <span>تأكيد الحجز وطباعة كارت العمل</span>
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+        </div>

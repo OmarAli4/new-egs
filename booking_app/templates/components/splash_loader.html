@@ -1,0 +1,66 @@
+<!-- 1. SPLASH SCREEN / EGS TELEMETRY LOADER -->
+    <div class="splash-overlay" id="splashLoader">
+        <div class="splash-content">
+            <div class="splash-logo-card">
+                <svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block;">
+                    <defs>
+                        <linearGradient id="splashGradLeft" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#00D2FF"/>
+                            <stop offset="100%" stop-color="#0080FF"/>
+                        </linearGradient>
+                        <linearGradient id="splashGradMid" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#0080FF"/>
+                            <stop offset="100%" stop-color="#0055FF"/>
+                        </linearGradient>
+                        <linearGradient id="splashGradRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0066FF"/>
+                            <stop offset="100%" stop-color="#003DBD"/>
+                        </linearGradient>
+                        <linearGradient id="splashNeedleGrad" x1="0" y1="105" x2="0" y2="25" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#0055FF"/>
+                            <stop offset="50%" stop-color="#00A3FF"/>
+                            <stop offset="100%" stop-color="#FFFFFF"/>
+                        </linearGradient>
+                        <filter id="splashGaugeShadow" x="-30%" y="-30%" width="160%" height="160%">
+                            <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#0066FF" flood-opacity="0.18"/>
+                        </filter>
+                        <filter id="splashNeedleGlow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#00D2FF" flood-opacity="0.70"/>
+                        </filter>
+                    </defs>
+                    <g filter="url(#splashGaugeShadow)">
+                        <path d="M 40.79 126.22 A 82 82 0 0 1 63.04 46.01 L 78.32 61.84 A 60 60 0 0 0 62.04 120.53 Z" fill="url(#splashGradLeft)"/>
+                        <path d="M 69.52 40.38 A 82 82 0 0 1 170.48 40.38 L 156.94 57.72 A 60 60 0 0 0 83.06 57.72 Z" fill="url(#splashGradMid)"/>
+                        <path d="M 176.96 46.01 A 82 82 0 0 1 199.21 126.22 L 177.96 120.53 A 60 60 0 0 0 161.68 61.84 Z" fill="url(#splashGradRight)"/>
+                    </g>
+                    <g class="egs-needle-group" filter="url(#splashNeedleGlow)">
+                        <animateTransform
+                            attributeName="transform"
+                            type="rotate"
+                            values="-50 120 105; 38 120 105; 10 120 105; 42 120 105; -15 120 105; 25 120 105; -50 120 105"
+                            keyTimes="0; 0.22; 0.36; 0.54; 0.70; 0.86; 1"
+                            dur="3.2s"
+                            repeatCount="indefinite"
+                            calcMode="spline"
+                            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                        />
+                        <polygon points="117.5,105 120,25 122.5,105" fill="url(#splashNeedleGrad)"/>
+                        <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
+                        <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
+                    </g>
+                    <g fill="#FFFFFF">
+                        <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
+                        <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
+                        <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
+                    </g>
+                    <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#FFFFFF">Elite Garage Service Center</text>
+                </svg>
+            </div>
+            <div class="splash-brand">ELITE GARAGE SERVICE</div>
+            <div class="splash-sub">جاري فحص حالة أسطول الصيانة وتشغيل المواعيد...</div>
+            <div class="splash-progress-track">
+                <div class="splash-progress-bar" id="splashBar"></div>
+            </div>
+            <div class="splash-counter tabular" id="splashPercent">0%</div>
+        </div>
+    </div>

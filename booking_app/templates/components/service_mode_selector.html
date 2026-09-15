@@ -1,0 +1,178 @@
+<!-- 2. PRIMARY SERVICE CHANNEL SELECTOR (In-Center vs Mobile Van) -->
+<section class="service-channel-section pt-14 pb-18 md:pt-20 md:pb-24 max-w-5xl mx-auto px-2 sm:px-4 relative z-20" id="serviceChannelSelector">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 text-xs font-light text-[#3B82F6] bg-blue-500/10 border border-blue-500/20 py-1.5 px-4 rounded-full uppercase tracking-widest mb-3 animate-pulse">
+            <i data-feather="layers" class="w-3.5 h-3.5"></i>
+            <span>قنوات الصيانة المعتمدة</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-display font-light text-white tracking-wide mb-3">
+            حدد الطريقة الأنسب لصيانة سيارتك
+        </h2>
+        <p class="text-sm text-neutral-400 font-light leading-relaxed">
+            اختر ما بين حجز موعد وزيارة فرع مركز الصيانة المعتمد، أو طلب ورشة الصيانة المتنقلة الفورية لتصلك وتنفذ الصيانة بالكامل أمامك في موقعك.
+        </p>
+    </div>
+
+    <!-- The 2 Primary Service Cards with Luxury Micro-Interactions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
+        
+        <div id="cardBranchMode" class="service-mode-card h-full group relative overflow-hidden rounded-2xl border border-neutral-800 bg-[#0B0F17] p-7 md:p-8 flex flex-col justify-between cursor-pointer will-change-transform transform-gpu shadow-xl" onclick="selectServiceChannel('branch', event)">
+            
+            <div class="relative z-10">
+                <div class="flex items-center justify-between gap-4 mb-6">
+                    <!-- Icon Box with Beacon Animation -->
+                    <div class="icon-box w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:border-blue-500/50 group-hover:bg-blue-500/15 transition-all duration-500 shadow-lg">
+                        <i data-feather="home" class="w-8 h-8 text-[#3B82F6] icon-home-anim transition-transform duration-500 group-hover:scale-110"></i>
+                    </div>
+                    
+                    <span class="channel-badge text-[11px] font-medium text-neutral-300 bg-white/5 border border-white/10 py-1.5 px-3.5 rounded-full flex items-center gap-1.5 group-hover:border-blue-500/40 group-hover:text-blue-200 transition-colors">
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping"></span>
+                        <span>زيارة الفرع الرئيسي</span>
+                    </span>
+                </div>
+
+                <h3 class="text-xl md:text-2xl font-display font-medium text-white mb-2.5 group-hover:text-blue-400 transition-colors duration-300 flex items-center gap-2">
+                    <span>حجز في مركز الصيانة (في الفرع)</span>
+                    <i data-feather="arrow-left" class="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-blue-400"></i>
+                </h3>
+                <p class="text-xs text-neutral-400 font-light leading-relaxed mb-6 group-hover:text-neutral-300 transition-colors duration-300">
+                    فحص ألماني شامل وإصلاحات ميكانيكية وكهربائية كبرى داخل ورشاتنا المركزية المجهزة بأحدث أجهزة التشخيص.
+                </p>
+
+                <ul class="space-y-3 text-xs text-neutral-300 font-light mb-8 border-t border-white/10 pt-4">
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i data-feather="check" class="w-3 h-3 text-[#3B82F6]"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">أحدث منصات ضبط الزوايا وأجهزة Bosch الألمانية</span>
+                    </li>
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1 delay-75">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i data-feather="check" class="w-3 h-3 text-[#3B82F6]"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">فحص شامل للفرامل ونظام التعليق والعفشة والمحرك</span>
+                    </li>
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1 delay-150">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                            <i data-feather="check" class="w-3 h-3 text-[#3B82F6]"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">استراحة VIP مكيفة مجهزة بشاشات وواي فاي</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="relative z-10 pt-4 mt-auto">
+                <button type="button" class="channel-btn btn btn-secondary btn-block group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg" onclick="event.stopPropagation(); selectServiceChannel('branch', event)">
+                    <i data-feather="calendar" class="arrow-indicator w-4 h-4"></i>
+                    <span>احجز موعدك في المركز 🏢 ⬇️</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="cardMobileMode" class="service-mode-card featured-mode h-full group relative overflow-hidden rounded-2xl border border-blue-900/60 bg-[#0A1120] p-7 md:p-8 flex flex-col justify-between cursor-pointer will-change-transform transform-gpu shadow-xl" onclick="selectServiceChannel('mobile', event)">
+            
+            <div class="relative z-10">
+                <div class="flex items-center justify-between gap-4 mb-6">
+                    <!-- Icon Box with Truck Rumble Animation -->
+                    <div class="icon-box w-16 h-16 rounded-2xl bg-blue-600/20 border border-blue-400/40 flex items-center justify-center text-white group-hover:border-blue-400 group-hover:bg-blue-500/30 transition-all duration-500 shadow-sm">
+                        <i data-feather="truck" class="w-8 h-8 text-white icon-truck-anim transition-transform duration-500 group-hover:scale-110"></i>
+                    </div>
+
+                    <span class="channel-badge text-[11px] font-medium text-blue-200 bg-blue-500/25 border border-blue-400/40 py-1.5 px-3.5 rounded-full flex items-center gap-1.5 ">
+                        <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
+                        <span>الأكثر طلباً وراحة ⭐</span>
+                    </span>
+                </div>
+
+                <h3 class="text-xl md:text-2xl font-display font-medium text-white mb-2.5 group-hover:text-blue-300 transition-colors duration-300 flex items-center gap-2">
+                    <span>ورشة الصيانة المتنقلة (بنجيلك مكانك)</span>
+                    <i data-feather="arrow-left" class="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-blue-300"></i>
+                </h3>
+                <p class="text-xs text-blue-200/80 font-light leading-relaxed mb-6 group-hover:text-blue-100 transition-colors duration-300">
+                    سيارة صيانة متكاملة بتجيلك لحد باب بيتك أو مكان عملك وتنفذ الصيانة الدورية فوراً أمام عينك بدون أي فوضى.
+                </p>
+
+                <ul class="space-y-3 text-xs text-neutral-200 font-light mb-8 border-t border-blue-500/20 pt-4">
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/25 border border-blue-400/40 flex items-center justify-center text-blue-300 shrink-0">
+                            <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">شفط زيوت وتغيير فلاتر وبوجيهات بنظام ألماني نظيف</span>
+                    </li>
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1 delay-75">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/25 border border-blue-400/40 flex items-center justify-center text-blue-300 shrink-0">
+                            <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">فحص كمبيوتر ألماني وتشخيص شامل عند موقعك</span>
+                    </li>
+                    <li class="flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-x-1 delay-150">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/25 border border-blue-400/40 flex items-center justify-center text-blue-300 shrink-0">
+                            <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">وصول سريع في 45 دقيقة بـ 6 أكتوبر والشيخ زايد</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="relative z-10 pt-4 mt-auto">
+                <button type="button" class="channel-btn btn btn-primary btn-large btn-block shadow-md group-hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2" onclick="event.stopPropagation(); selectServiceChannel('mobile', event)">
+                    <i data-feather="arrow-down" class="arrow-indicator w-4 h-4"></i>
+                    <span>اختر خدمات الصيانة المتنقلة 🚚 ⬇️</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Helpful Guidance Prompt (Disappears once selection is made) -->
+    <div id="serviceChoicePrompt" class="text-center mt-8 text-xs text-neutral-400 font-light flex items-center justify-center gap-2 transition-all duration-500">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+        <span>يرجى اختيار إحدى قنوات الخدمة أعلاه لفتح لوحة الحجز وتحديد الموعد 👆</span>
+    </div>
+</section>
+
+<style>
+/* Clean Matte Automotive Styling for Choice Cards (Zero Gloss / Zero Shimmer) */
+@keyframes truckPurr {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-2px) rotate(-1.5deg); }
+    75% { transform: translateY(1px) rotate(1.5deg); }
+}
+
+@keyframes centerBeacon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@keyframes arrowFloatBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}
+
+.service-mode-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                box-shadow 0.35s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+}
+
+.service-mode-card:hover {
+    transform: translateY(-6px);
+    border-color: #3B82F6 !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9) !important;
+}
+
+.service-mode-card:hover .icon-truck-anim {
+    animation: truckPurr 0.55s ease-in-out infinite;
+}
+
+.service-mode-card:hover .icon-home-anim {
+    animation: centerBeacon 1.2s ease-in-out infinite;
+}
+
+.service-mode-card:hover .arrow-indicator {
+    animation: arrowFloatBounce 0.7s ease-in-out infinite;
+}
+</style>

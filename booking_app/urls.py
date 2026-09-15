@@ -11,4 +11,6 @@ urlpatterns = [
     path('api/login/', views.api_login, name='api_login'),
     path('api/bookings/create/', views.api_create_booking, name='api_create_booking'),
     path('api/bookings/<str:ticket_code>/', views.api_booking_status, name='api_booking_status'),
+    path('api/health/', views.api_health, name='api_health'),
+    path('admin/booking/<int:booking_id>/print/', views.print_job_card, name='print_job_card'),
 ]
