@@ -3,7 +3,7 @@
         <div class="header-container">
             <a href="/" class="brand-logo" onclick="goToHomePage(event)" title="الرئيسية - EGS Elite Garage">
                 <div class="egs-logo-badge">
-                    <svg viewBox="0 0 240 140" class="h-11 sm:h-[64px] w-auto block">
+                    <svg viewBox="0 0 240 140" class="h-14 sm:h-[84px] w-auto block">
                         <defs>
                             <linearGradient id="navGradLeft" x1="0%" y1="100%" x2="100%" y2="0%">
                                 <stop offset="0%" stop-color="#00D2FF"/>
@@ -45,16 +45,15 @@
                                 calcMode="spline"
                                 keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
                             />
-                            <polygon points="117.5,105 120,25 122.5,105" fill="url(#navNeedleGrad)"/>
-                            <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
+                            <polygon points="115.5,105 120,25 124.5,105" fill="url(#navNeedleGrad)"/>
+                            <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
                             <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
                         </g>
                         <g fill="#FFFFFF">
                             <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
                             <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
-                            <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
+                            <text x="142" y="104" font-family="'Outfit', sans-serif" font-weight="900" font-size="44" font-style="italic" fill="#FFFFFF">S</text>
                         </g>
-                        <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#FFFFFF">Elite Garage Service Center</text>
                     </svg>
                 </div>
             </a>
@@ -63,7 +62,7 @@
             <nav class="header-channels-nav flex items-center gap-1.5 sm:gap-2" aria-label="قنوات حجز الصيانة">
                 <button type="button" class="header-channel-btn btn-channel-mobile" id="headerBtnMobile" onclick="selectServiceChannel('mobile', event)" title="طلب ورشة الصيانة المتنقلة لتصلك في مكانك">
                     <i data-feather="truck" class="w-3.5 h-3.5 text-blue-400"></i>
-                    <span class="channel-text">ورشة متنقلة <span class="hidden sm:inline">(مكانك)</span></span>
+                    <span class="channel-text">ورشة متنقلة <span class="hidden sm:inline">(بنوصل مكانك)</span></span>
                     <span class="channel-badge-hot">متاح الآن 🟢</span>
                 </button>
                 <button type="button" class="header-channel-btn btn-channel-branch" id="headerBtnBranch" onclick="selectServiceChannel('branch', event)" title="حجز موعد فحص وزيارة في مركز الصيانة">

@@ -142,7 +142,8 @@
             <!-- ============================================== -->
             <!-- 5. BOSCH DIAGNOSTIC RUGGED TABLET DEVICE -->
             <!-- ============================================== -->
-            <g class="tablet-device-group" filter="drop-shadow(0 0 12px rgba(30, 96, 255, 0.4))">
+            <a href="tel:{{ site_settings.hotline_number|default:'01019900990' }}" style="pointer-events: auto; cursor: pointer;" class="tablet-click-area">
+            <g class="tablet-device-group tablet-hover-fx" filter="drop-shadow(0 0 12px rgba(30, 96, 255, 0.4))">
                 
                 <!-- Rugged Titanium Armored Outer Chassis -->
                 <rect x="133" y="6" width="174" height="40" rx="7" fill="#0B132B" stroke="#1E293B" stroke-width="2"/>
@@ -203,6 +204,7 @@
                     <rect id="shutterDoorRight" x="299" y="9" width="0" height="34" fill="#061226" stroke="#38BDF8" stroke-width="2" class="shutter-door-elem"/>
                 </g>
             </g>
+            </a>
         </svg>
     </div>
 </aside>
@@ -280,6 +282,14 @@
 /* Shutter Door Smooth Transition */
 .shutter-door-elem {
     transition: width 0.45s cubic-bezier(0.7, 0, 0.3, 1), x 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.tablet-click-area:hover .tablet-hover-fx {
+    transform: scale(1.02) translateY(-2px);
+    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.7));
+}
+.tablet-hover-fx {
+    transition: all 0.3s ease-out;
+    transform-origin: center right;
 }
 </style>
 
