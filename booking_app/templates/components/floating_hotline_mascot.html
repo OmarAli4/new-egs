@@ -1,5 +1,5 @@
 <!-- 7. FLOATING HOTLINE MASCOT WIDGET (PURE VISUAL - BOSCH DIAGNOSTIC TABLET WITH SHUTTERS & TYPEWRITER) -->
-<aside class="fixed bottom-6 left-6 z-50 pointer-events-none select-none cursor-default transition-all duration-300 scale-90 sm:scale-100 origin-bottom-left will-change-transform transform-gpu" style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;" id="floatingHotlineMascot" aria-label="رقم الخط الساخن للمركز">
+<a href="tel:{{ site_settings.hotline_number|default:'01019900990' }}" class="fixed bottom-6 left-6 z-50 pointer-events-auto select-none cursor-pointer hover:scale-105 transition-all duration-300 scale-90 sm:scale-100 origin-bottom-left will-change-transform transform-gpu" style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;" id="floatingHotlineMascot" aria-label="رقم الخط الساخن للمركز">
     <!-- Transparent Frameless Animated SVG Stage (GPU Hardware Isolated) -->
     <div class="relative w-[285px] h-[95px] sm:w-[325px] sm:h-[110px] filter drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]" style="contain: layout paint;">
         <svg viewBox="0 0 315 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
@@ -100,7 +100,7 @@
 
                 <!-- EGS Logo Decal on Van Side -->
                 <text x="28" y="64" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="7" font-weight="800" letter-spacing="0.5">EGS</text>
-                <text x="44" y="64" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="5" font-weight="600">صيانة</text>
+                <text x="44" y="64" fill="#38BDF8" font-family="'Outfit', sans-serif" font-size="4.5" font-weight="800">SERVICE</text>
 
                 <!-- Headlight (Glowing White/Amber LED) -->
                 <circle cx="117" cy="71" r="2.5" fill="#FFFFFF" filter="drop-shadow(0 0 4px #38BDF8)"/>
@@ -171,8 +171,8 @@
                           fill="none" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" class="diagnostic-pulse-wave"/>
 
                     <!-- EGS Diagnostic Header Label -->
-                    <text x="245" y="16" text-anchor="middle" direction="rtl" fill="#60A5FA" font-family="'Cairo', sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.3">
-                        تشخيص فوري | الخط الساخن
+                    <text x="245" y="16" text-anchor="middle" fill="#60A5FA" font-family="'Cairo', sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.3">
+                        الخط الساخن | تشخيص فوري
                     </text>
                 </g>
 
@@ -188,7 +188,7 @@
                 <text id="tabletPhoneNumber" x="228" y="34" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#FFFFFF" font-family="'Alexandria', 'Outfit', monospace" font-size="14.5" font-weight="900" letter-spacing="1.4" class="tablet-number-glow">{{ site_settings.hotline_number|default:"01019900990" }}</text>
 
                 <!-- Screen Bottom Subtitle / Brand Badge -->
-                <text x="228" y="41" text-anchor="middle" direction="rtl" fill="#94A3B8" font-family="'Cairo', sans-serif" font-size="5.5" font-weight="500">
+                <text x="228" y="41" text-anchor="middle" fill="#94A3B8" font-family="'Cairo', sans-serif" font-size="5.5" font-weight="500">
                     مركز صيانة وفحص معتمد Bosch EGS
                 </text>
 
@@ -205,7 +205,7 @@
             </g>
         </svg>
     </div>
-</aside>
+</a>
 
 <style>
 /* CSS Keyframes for High-Performance Pure SVG Animation (60 FPS) */
